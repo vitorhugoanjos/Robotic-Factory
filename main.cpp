@@ -24,9 +24,6 @@ using namespace std;
 #include "Fabrica.h"
 
 
-
-//teste
-
 int showMenu();
 void runChoice(int choice);
 
