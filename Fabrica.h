@@ -234,6 +234,7 @@ int Fabrica::loadArmazens() {
         Robot *apRobot = &auxRobot;
         robots.encontra(robotKey, apRobot); // encontra o robot que tem a robot key armazenada na variavel robotKey
         postos.insere(new Armazem(key,stock,safety,*apRobot));
+
     }
       }
  }
@@ -265,6 +266,7 @@ int Fabrica::loadAutomaticos(){
 
   while(!fx2.eof()){ /* while it doesnt reach the end of the file */
       getline(fx2,line,'\n'); /* the content of the line is saved */
+
       if(line.size() > 0 ) {
 
 
@@ -317,6 +319,7 @@ int Fabrica::loadAutomaticos(){
       }
  }
     setAutomaticosQT(index-1);
+
     fx2.close();
     return 0;
 }
