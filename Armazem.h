@@ -1,4 +1,4 @@
-/* Projecto ESINF - 2Âº ano LEI -ISEP
+/* Projecto ESINF - 2º ano LEI -ISEP
  * Outubro 2012
  *
  * File:   Posto.h
@@ -16,36 +16,36 @@ using namespace std;
 
 /*
  * Subclasse ARMAZEM: derivada de POSTO, permite instanciar objectos do tipo ARMAZEM; herda os atributos
- * key e stock de posto. Ã‰ composta por um objecto do tipo ROBOT
- * @author JoÃ£o Carreira, Vitor Hugo Santos
+ * key e stock de posto. É composta por um objecto do tipo ROBOT
+ * @author João Carreira, Vitor Hugo Anjos
  * @version: 1.0 (Oct 2012)
  */
 class Armazem : public Posto{
 
 private:
-    /* quantidade de matÃ©ria prima de seguranÃ§a (em kg) */
+    /* quantidade de matéria prima de segurança (em kg) */
     double safety;
-    /* robot associado ao posto armazÃ©m */
+    /* robot associado ao posto armazém */
     Robot robot;
 
 public:
-    /* protÃ³tipos de construtopres e destrutor */
+    /* protótipos de construtopres e destrutor */
     Armazem();
     Armazem(int kp, double stp, double sap, Robot r);
     Armazem(const Armazem &a);
     ~Armazem();
 
-    /* protÃ³tipos de GETS e SETS */
+    /* protótipos de GETS e SETS */
     double getSafety();
     Robot getRobot();
     void setSafety(double sap);
     void setRobot(Robot rp);
 
-    /* sobrecarga de operadores de comparaÃ§Ã£o */
+    /* sobrecarga de operadores de comparação */
     bool operator == (const Armazem &a) const;
     bool operator > (const Armazem &a) const;
 
-    /* sobrecarga do operadtor de atribuiÃ§Ã£o */
+    /* sobrecarga do operadtor de atribuição */
     const Armazem &operator = (const Armazem &a);
 
     /* sobrecarga do operador de stream out */
@@ -55,8 +55,8 @@ public:
 
 
 /**
- * Construtor sem parÃ¢metros, cria um posto armazÃ©m com matÃ©ria-prima a zero; invoca os
- * construtores sem parÃ¢metros da superclasse POSTO e da classe ROBOT
+ * Construtor sem parâmetros, cria um posto armazém com matéria-prima a zero; invoca os
+ * construtores sem parâmetros da superclasse POSTO e da classe ROBOT
  */
 Armazem::Armazem():Posto(){
     setSafety(0);
@@ -65,13 +65,13 @@ Armazem::Armazem():Posto(){
 
 
 /**
- * Construtor com parÃ¢metros: cria um objecto do tipo ARMAZEM, com os parÃ¢metros key e
- * stock (herdados de POSTO), safety e robot; invoca construtores com parÃ¢metros de
+ * Construtor com parâmetros: cria um objecto do tipo ARMAZEM, com os parâmetros key e
+ * stock (herdados de POSTO), safety e robot; invoca construtores com parâmetros de
  * POSTO e ROBOT
- * @param kp    Ã© a chava a atribuir ao posto (herdado de POSTO)
- * @param stp   Ã© a quantidade de matÃ©ria-prima que o posto dispÃµe (herdado de POSTO)
- * @param sap   Ã© a quantidade de matÃ©ria-prima de seguranÃ§a
- * @param rp    Ã© o Robot associado ao posto armazÃ©m
+ * @param kp    é a chava a atribuir ao posto (herdado de POSTO)
+ * @param stp   é a quantidade de matéria-prima que o posto dispõe (herdado de POSTO)
+ * @param sap   é a quantidade de matéria-prima de segurança
+ * @param rp    é o Robot associado ao posto armazém
  */
 Armazem::Armazem(int kp, double stp, double sap, Robot rp):Posto(kp, stp), robot(rp){
     setSafety(sap);
@@ -79,10 +79,10 @@ Armazem::Armazem(int kp, double stp, double sap, Robot rp):Posto(kp, stp), robot
 
 
 /**
- * Construtor cÃ³pia: cria uma cÃ³pia de um objecto do tipo ARMAZEM, passado por
- * referÃªncia
- * @param a     Ã© a referÃªncia do objecto do tipo ARMAZEM (declarada como const de
- *              forma a que o objecto copiado nÃ£o sofra alteraÃ§Ãµes)
+ * Construtor cópia: cria uma cópia de um objecto do tipo ARMAZEM, passado por
+ * referência
+ * @param a     é a referência do objecto do tipo ARMAZEM (declarada como const de
+ *              forma a que o objecto copiado não sofra alterações)
  */
 Armazem::Armazem(const Armazem &a):Posto(a){
     safety = a.safety;
@@ -91,15 +91,15 @@ Armazem::Armazem(const Armazem &a):Posto(a){
 
 
 /**
- * Destrutor para objectos do tipo POSTO (sem definiÃ§Ã£o)
+ * Destrutor para objectos do tipo POSTO (sem definição)
  */
 Armazem::~Armazem(){
 }
 
 
 /**
- * MÃ©todo de acesso pÃºblico Ã  quantidade de matÃ©ria-prima de seguranÃ§a do armazÃ©m
- * @return      quantidade de matÃ©ria-prima de seguranÃ§a
+ * Método de acesso público à quantidade de matéria-prima de segurança do armazém
+ * @return      quantidade de matéria-prima de segurança
  */
 double Armazem::getSafety(){
     return safety;
@@ -107,8 +107,8 @@ double Armazem::getSafety(){
 
 
 /**
- * MÃ©todo de acesso pÃºblico ao robot associado ao armazÃ©m
- * @return      Ã© o robot associado ao armazÃ©m
+ * Método de acesso público ao robot associado ao armazém
+ * @return      é o robot associado ao armazém
  */
 Robot Armazem::getRobot(){
     return robot;
@@ -116,19 +116,19 @@ Robot Armazem::getRobot(){
 
 
 /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o da quantidade de matÃ©ria-prima de seguranÃ§a
- * do posto armazÃ©m
- * @param sap       quantidade de matÃ©ria-prima de seguranÃ§a
+ * Método público de modificação da quantidade de matéria-prima de segurança
+ * do posto armazém
+ * @param sap       quantidade de matéria-prima de segurança
  */
 void Armazem::setSafety(double sap){
-    /* validaÃ§Ã£o de safety: se < 0 fica a 0*/
+    /* validação de safety: se < 0 fica a 0*/
     sap > 0 ? safety = sap: safety = 0;
 }
 
 
 /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o do robot do armazÃ©m
- * @param rp    Ã© o robot a associar ao armazÃ©m
+ * Método público de modificação do robot do armazém
+ * @param rp    é o robot a associar ao armazém
  */
 void Armazem::setRobot(Robot rp){
     robot = rp;
@@ -136,28 +136,28 @@ void Armazem::setRobot(Robot rp){
 
 
 /**
- * MÃ©todo de escrita, imprime no ecrÃ£ toda a informaÃ§Ã£o sobre o armazÃ©m,
- * nomeadamente a sua chave de identicaÃ§Ã£o e quantidade de matÃ©ria-prima
- * em stock (invocando o mÃ©todo de escrita da superclasse POSTO), a quantidade
- * de matÃ©ria-prima de seguranÃ§a e a informaÃ§Ã£o referente ao robot associado
- * ao armazÃ©m
+ * Método de escrita, imprime no ecrã toda a informação sobre o armazém,
+ * nomeadamente a sua chave de identicação e quantidade de matéria-prima
+ * em stock (invocando o método de escrita da superclasse POSTO), a quantidade
+ * de matéria-prima de segurança e a informação referente ao robot associado
+ * ao armazém
  * @param out
  */
 void Armazem::write(ostream &out) const{
-    cout << "\nTipo de Posto: ArmazÃ©m" << endl;
+    cout << "\nTipo de Posto: Armazem" << endl;
     Posto::write(out);
-    cout << "Limite seguranÃ§a (kg): " << safety << endl;
+    cout << "Limite seguranca: " << safety << " kg" << endl;
     cout << "Robot associado: " << robot << endl;
 }
 
 
 /**
- * sobrecarga de operador de comparaÃ§Ã£o, para verificar se dois postos armazÃ©m
- * sÃ£o iguais em termos de quantidade de matÃ©ria-prima em stock; invoca o operador
+ * sobrecarga de operador de comparação, para verificar se dois postos armazém
+ * são iguais em termos de quantidade de matéria-prima em stock; invoca o operador
  * sobrecarregado == da superclasse POSTO
- * @param a     Ã© a referÃªncia para um objecto do tipo ARMAZEM
- * @return      TRUE se tiverem a mesma quantidade de matÃ©ria-prima em stock, caso
-                contrÃ¡rio devolve FALSE
+ * @param a     é a referência para um objecto do tipo ARMAZEM
+ * @return      TRUE se tiverem a mesma quantidade de matéria-prima em stock, caso
+                contrário devolve FALSE
  */
 bool Armazem::operator == (const Armazem &a) const{
     return Posto::operator ==(a);
@@ -165,12 +165,12 @@ bool Armazem::operator == (const Armazem &a) const{
 
 
 /**
- * sobrecarga do operador >, para verificar se o stock de matÃ©ria-prima de um
- * posto armazÃ©m Ã© maior do que a de outro; invoca o operador sobrecarregado >
+ * sobrecarga do operador >, para verificar se o stock de matéria-prima de um
+ * posto armazém é maior do que a de outro; invoca o operador sobrecarregado >
  * da superclasse POSTO
- * @param a     Ã© a referÃªncia para um objecto do tipo ARMAZEM
- * @return      TRUE se a quantidade de metÃ©ria-prima em stock fÃ´r superior, caso
-                contrÃ¡rio devolve FALSE
+ * @param a     é a referência para um objecto do tipo ARMAZEM
+ * @return      TRUE se a quantidade de metéria-prima em stock fôr superior, caso
+                contrário devolve FALSE
  */
 bool Armazem::operator > (const Armazem &a) const{
     return Posto::operator >(a);
@@ -178,10 +178,10 @@ bool Armazem::operator > (const Armazem &a) const{
 
 
 /**
- * sobrecarga do operador de atribuiÃ§Ã£o = para atribuir, directamente, um objecto
+ * sobrecarga do operador de atribuição = para atribuir, directamente, um objecto
  * do tipo ARMAZEM a outro; invoca o operador sobrecarregado = da superclasse
- * POSTO de forma a que os atributos da superclasse sejam tambÃ©m atribuÃ­dos
- * @param a     Ã© a referÃªncia para um objecto do tipo ARMAZEM
+ * POSTO de forma a que os atributos da superclasse sejam também atribuídos
+ * @param a     é a referência para um objecto do tipo ARMAZEM
  * @return      apontador para o objecto corrente
  */
 const Armazem & Armazem::operator = (const Armazem &a){
@@ -194,9 +194,9 @@ const Armazem & Armazem::operator = (const Armazem &a){
 
 /**
  * Sobrecarga do operador de stream out
- * @param out   referÃªncia do standard output
- * @param a     referÃªncia de um objecto do tipo ARMAZEM
- * @return      referÃªncia do standard output
+ * @param out   referência do standard output
+ * @param a     referência de um objecto do tipo ARMAZEM
+ * @return      referência do standard output
  */
 ostream &operator << (ostream &out, const Armazem &a){
     a.write(out);

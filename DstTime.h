@@ -1,9 +1,9 @@
-/* Projecto ESINF - 2Âº ano LEI -ISEP
- * 
+/* Projecto ESINF - 2º ano LEI -ISEP
+ *
  * Outubro 2012
- * 
+ *
  * File:   Posto.h
- * Authors: JoÃ£o Carreira
+ * Authors: João Carreira
  *
  * Created on October 16, 2012, 1:02 PM
  */
@@ -16,38 +16,38 @@
 
  /**
  * Class DstTime: classe que cria objectos do tipo DSTTIME, que caracteriza o tempo e
- * a distÃ¢ncias que separam dois postos (tanto automÃ¡ticos como armazÃ©m)
+ * a distâncias que separam dois postos (tanto automáticos como armazém)
  */
  class DstTime{
 
  private:
- 	/* distÃ¢ncia, em metros, entre dois postos */
+ 	/* distância, em metros, entre dois postos */
  	double dst;
- 	/* distÃ¢ncia, em minutos, entre dois postos */
+ 	/* distância, em minutos, entre dois postos */
  	double time;
 
 public:
-	/* protÃ³tipos de construtores e destrutores */
+	/* protótipos de construtores e destrutores */
 	DstTime();
 	DstTime(double dp, double tp);
 	DstTime(const DstTime &dt);
 	~DstTime();
 
-	/* protÃ³tipos do mÃ©todo clone */
+	/* protótipos do método clone */
 	DstTime *clone() const;
 
-	/* protÃ³tipos de GETS e SETS */
+	/* protótipos de GETS e SETS */
 	double getDst();
 	double getTime();
 	void setDst(double dp);
 	void setTime(double tp);
 
-	/* sobrecarga de operadores de comaparaÃ§Ã£o */
+	/* sobrecarga de operadores de comaparação */
 	bool operator == (const DstTime &dt) const;
 	bool operator > (const DstTime &dt) const;
 	bool operator != (const DstTime &dt) const;
 
-	/* sobrecarga do operador de atribuiÃ§Ã£o */
+	/* sobrecarga do operador de atribuição */
 	const DstTime &operator = (const DstTime &dt);
 
 	/* sobrecarga do operador de stream out */
@@ -57,7 +57,7 @@ public:
 
 
  /**
- * Construtor sem parÃ¢metros, cria um objecto DSTTIME com distÃ¢ncia e tempo a zero
+ * Construtor sem parâmetros, cria um objecto DSTTIME com distância e tempo a zero
  */
  DstTime::DstTime(){
  	setDst(0);
@@ -66,10 +66,10 @@ public:
 
 
  /**
- * Construtor com parÃ¢metros, cria um objecto DSTTIME, com os parÃ¢metros distÃ¢ncia 
+ * Construtor com parâmetros, cria um objecto DSTTIME, com os parâmetros distância
  * e tempo
- * @param dp		Ã© a distÃ¢ncia que separa dois postos
- * @param tp 		Ã© o tempo entre dois postos
+ * @param dp		é a distância que separa dois postos
+ * @param tp 		é o tempo entre dois postos
  */
  DstTime::DstTime(double dp, double tp){
  	setDst(dp);
@@ -78,9 +78,9 @@ public:
 
 
  /**
- * Construtor cÃ³pia, cria uma cÃ³pia do objecto do tipo DSTTIME, passado por referÃªncia
- * @param dt 	Ã© a referÃªncia do objecto do tipo DSTTIME (declarado como const de forma
- *				a que o objecto nÃ£o seja modificado 
+ * Construtor cópia, cria uma cópia do objecto do tipo DSTTIME, passado por referência
+ * @param dt 	é a referência do objecto do tipo DSTTIME (declarado como const de forma
+ *				a que o objecto não seja modificado
  */
  DstTime::DstTime(const DstTime &dt){
  	dst = dt.dst;
@@ -89,14 +89,14 @@ public:
 
 
  /**
- * Destrutor para objectos do tipo DSTTIME (sem definiÃ§Ã£o) 
+ * Destrutor para objectos do tipo DSTTIME (sem definição)
  */
  DstTime::~DstTime(){
  }
 
 
 /**
-* MÃ©todo clone, necessÃ¡rio para a matriz dinÃ¢mica
+* Método clone, necessário para a matriz dinâmica
 */
 DstTime * DstTime::clone() const{
 	return new DstTime(*this);
@@ -104,8 +104,8 @@ DstTime * DstTime::clone() const{
 
 
  /**
- * MÃ©todo de acesso pÃºblico Ã  distÃ¢ncia entre dois postos
- * @return 		distÃ¢ncia, em metros, que separa dois postos
+ * Método de acesso público à distância entre dois postos
+ * @return 		distância, em metros, que separa dois postos
  */
  double DstTime::getDst(){
  	return dst;
@@ -113,7 +113,7 @@ DstTime * DstTime::clone() const{
 
 
  /**
- * MÃ©todo de acesso pÃºblico ao tempo entre dois postos
+ * Método de acesso público ao tempo entre dois postos
  * @return 		tempo, em minutos, que separa dois postos
  */
  double DstTime::getTime(){
@@ -122,29 +122,29 @@ DstTime * DstTime::clone() const{
 
 
  /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o da distÃ¢ncia entre dois postos
- * @param dp	distÃ¢ncia entre dois postos (em metros) 
+ * Método público de modificação da distância entre dois postos
+ * @param dp	distância entre dois postos (em metros)
  */
  void DstTime::setDst(double dp){
- 	/* validaÃ§Ã£o da distÃ¢ncia, tem que ser um valor positivo, caso contrÃ¡rio atribui -1; 
- 	-1 fica como valor indicativo de uma distÃ¢ncia invÃ¡lida */
+ 	/* validação da distância, tem que ser um valor positivo, caso contrário atribui -1;
+ 	-1 fica como valor indicativo de uma distância inválida */
  	dp > 0 ? dst = dp : dst = -1;
  }
 
 
 /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o do tempo entre dois postos
- * @param tp	tempo entre dois postos (em minutos) 
+ * Método público de modificação do tempo entre dois postos
+ * @param tp	tempo entre dois postos (em minutos)
  */
  void DstTime::setTime(double tp){
- 	/* validaÃ§Ã£o do tempo, tem que ser um valor positivo, caso contrÃ¡rio atribui -1;
- 	-1 fica como valor indicativo de um tempo invÃ¡lido */
+ 	/* validação do tempo, tem que ser um valor positivo, caso contrário atribui -1;
+ 	-1 fica como valor indicativo de um tempo inválido */
  	tp > 0 ? time = tp : time = -1;
  }
 
 
 /**
- * MÃ©todo de escrita, imprime no ecrÃ£ a distÃ¢ncia e o tempo que separam dois postos
+ * Método de escrita, imprime no ecrã a distância e o tempo que separam dois postos
  * @param out
  */
 void DstTime::write(ostream &out) const{
@@ -153,25 +153,22 @@ void DstTime::write(ostream &out) const{
 }
 
 
-/** 
- * sobrecarga de operador de comparaÃ§Ã£o, permite verificar se a distÃ¢ncia que separa
- * dois postos Ã© a mesma
- * @param dt    Ã© a referÃªncia de um objecto do tipo DSTTIME
- * @return      TRUE, caso a distÃ¢ncia seja igual; FALSE, no caso oposto
+/**
+ * sobrecarga de operador de comparação, permite verificar se a distância que separa
+ * dois postos é a mesma
+ * @param dt    é a referência de um objecto do tipo DSTTIME
+ * @return      TRUE, caso a distância seja igual; FALSE, no caso oposto
  */
 bool DstTime::operator == (const DstTime &dt) const{
-    if(dst == dt.dst)
-        return true;
-    else
-        return false;
+    return(dst == dt.dst && time == dt.time);
 }
 
 
-/** 
- * sobrecarga de operador >, permite verificar se uma distÃ¢ncia Ã© maior do que 
+/**
+ * sobrecarga de operador >, permite verificar se uma distância é maior do que
  * outra
- * @param dt    Ã© a referÃªncia de um objecto do tipo DSTTIME
- * @return      TRUE, caso a distÃ¢ncia seja maior; FALSE, no caso oposto
+ * @param dt    é a referência de um objecto do tipo DSTTIME
+ * @return      TRUE, caso a distância seja maior; FALSE, no caso oposto
  */
 bool DstTime::operator > (const DstTime &dt) const{
     return (dst > dt.dst);
@@ -179,9 +176,9 @@ bool DstTime::operator > (const DstTime &dt) const{
 
 
 /**
- * sobrecarga do opereador !=, permite verificar se um objecto DstTime Ã©
- * diferente de outro (mÃ©todo necessÃ¡rio para determinadas funÃ§Ãµes do 
- * array dinÃ¢mico, do ficheiro Dyn2DArray.h)
+ * sobrecarga do opereador !=, permite verificar se um objecto DstTime é
+ * diferente de outro (método necessário para determinadas funções do
+ * array dinâmico, do ficheiro Dyn2DArray.h)
  */
 bool DstTime::operator != (const DstTime &dt) const{
 	if(dst != dt.dst || dst != dt.time)
@@ -191,10 +188,10 @@ bool DstTime::operator != (const DstTime &dt) const{
 }
 
 
-/** 
- * sobrecarga do operador de atribuiÃ§Ã£o =, para atribuir, de forma directa, um
+/**
+ * sobrecarga do operador de atribuição =, para atribuir, de forma directa, um
  * objecto do tipo DSTTIME a outro
- * @param dt    referÃªncia para um objecto do tipo DSTTIME
+ * @param dt    referência para um objecto do tipo DSTTIME
  * @return      apontador para o objecto corrente
  */
 const DstTime & DstTime::operator = (const DstTime &dt){
@@ -206,9 +203,9 @@ const DstTime & DstTime::operator = (const DstTime &dt){
 
 /**
  * Sobrecarga do operador de stream out
- * @param out   referÃªncia do standard output
- * @param dt    referÃªncia de um objecto do tipo DSTTIME
- * @return      referÃªncia do standard output
+ * @param out   referência do standard output
+ * @param dt    referência de um objecto do tipo DSTTIME
+ * @return      referência do standard output
  */
 ostream &operator << (ostream &out, const DstTime &dt){
     dt.write(out);

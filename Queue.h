@@ -25,7 +25,7 @@ class Queue
 		T& ultimo() const;
 		int comprimento() const;
 
-		Queue<T>& operator = (const Queue<T>& q);   // atribuiÃ§Ã£o
+		Queue<T>& operator = (const Queue<T>& q);   // atribuição
 
 		void escreve(ostream & ostr) const;
 };

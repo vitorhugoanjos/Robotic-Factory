@@ -1,9 +1,9 @@
-/* Projecto ESINF - 2Âº ano LEI -ISEP
+/* Projecto ESINF - 2º ano LEI -ISEP
  *
  * Outubro 2012
  *
  * File:   Posto.h
- * Authors: JoÃ£o Carreira
+ * Authors: Joao Carreira, Vitor Hugo Anjos
  *
  * Created on October 16, 2012, 1:02 PM
  */
@@ -28,200 +28,193 @@ using namespace std;
 
 
 
- /* Linked list of robots */
-    Lista<Robot*> robots;
+/* Lista ligada de robots */
+Lista<Robot*> robots;
 
-    /* Queue of postos */
-    Queue<Posto*> postos;
+/* Fila de espera de postos de trabalho */
+Queue<Posto*> postos;
 
-    /* 2D Array of DstTime */
-    Dyn2DArray <DstTime> distanciasTempos;
+/* Matriz dinámica de distancias/tempos */
+Dyn2DArray <DstTime> distanciasTempos;
 
-    /* Number of armazens */
-    int armazensQT;
+/* Quantidade de armazéns */
+int armazensQT;
 
-    /* Number of robots */
-    int robotsQT;
+/* Quantidade de robots */
+int robotsQT;
 
-    /* Number of automaticos */
-    int automaticosQT;
+/* Quantidade de postos automáticos */
+int automaticosQT;
 
-     /* load from files */
-    int loadArmazens();
-    int loadAutomaticos();
-    int loadRobots();
-    int loadTimeDists();
+/* Informa se foram lidos e inseridos robots na lista ligada */
+bool leuRobots;
 
-    /* GETS SETS */
-    int getArmazensQT();
-    void setArmazensQT(int armQT);
+/* Informa se foram lidos e inseridos armazéns na fila de espera */
+bool leuArmazens;
 
-    int getRobotsQT();
-    void setRobotsQT(int rbtQT);
+/* Informa se foram lidos e inseridos postos automáticos na fila de espera */
+bool leuAutomaticos;
 
-    int getAutomaticosQT();
-    void setAutomaticosQT(int autQT);
+/* Informa se a configuração é válida */
+bool isValid;
 
-    bool checkConfig();
+/* Protótipo do método init */
+void init();
 
-    int showMenu();
-    void runChoice(int choice);
+ /* Protótipo do método loadArmazens */
+int loadArmazens();
 
+/* Protótipo do método loadAutomaticos */
+int loadAutomaticos();
+
+/* Protótipo do método loadRobots */
+int loadRobots();
+
+/* Protótipo do método loadTimeDists */
+int loadTimeDists();
+
+/* Protótipo do método checkConfig */
+bool checkConfig();
+
+/* Protótipo do método showMenu */
+void showMenu();
 
 
 int main(int argc, char** argv) {
 
-    loadRobots();
-    loadArmazens();
-    loadAutomaticos();
-    loadTimeDists();
+    init();
 
-    int choice;
-    choice = showMenu();
-    runChoice(choice);
+    if(isValid)
+      showMenu();
+    else
+      cout << " >> Configuracao invalida, por cada n postos armazém devem existir 2^n postos automaticos, servidos por n robots." << endl;
 
     return 0;
 }
 
 /**
- * Runs the user's choice
- * @param choice
+ * Chama os metodos responsaveis pela leitura dos ficheiros e verifica se os ficheiros foram lidos com sucesso de modo a evitar
+ * falhas na leitura e insercao; Este metodo tambem verifica se a configuracao é valida.
  */
-void runChoice(int choice){
+void init(){
+
+  loadRobots();
+  loadAutomaticos();
+  if(leuRobots)
+   loadArmazens();
+  if(leuRobots && leuArmazens && leuAutomaticos)
+   loadTimeDists();
+  isValid = checkConfig();
+
+}
+
+/**
+ * Mostra um menu no terminal e corre a opcao escolhida pelo utilizador, o menu
+ * é controlado por uma condicao de saída.
+ */
+void showMenu(){
 
 
-  switch(choice){
+
+  bool sair = false;
+
+  while(!sair){
+
+    int choice = 0;
+    cout << "*****************************************" << endl;
+    cout << "*                                       *" << endl;
+    cout << "*           FABRICA ROBOTIZADA          *" << endl;
+    cout << "*                                       *" << endl;
+    cout << "*****************************************" << endl;
+    cout << "*     Menu:                             *\n" ;
+    cout << "*       1 - Listar robots               *\n" ;
+    cout << "*       2 - Listar postos               *\n" ;
+    cout << "*       3 - Listar tempos e distancias  *\n" ;
+    cout << "*       4 - Sair                        *\n";
+    cout << "*     Escolha a opcao:                  *\n";
+    cout << "*                                       *" << endl;
+    cout << "*****************************************" << endl;
+    cin >> choice;
+
+
+    switch(choice){
 
     case 1:
-      cout << robots <<  endl;
+      if(leuRobots)
+       cout << robots <<  endl;
+      else
+        cout << " >> Nao leu o ficheiro de robots!" << endl;
       break;
 
     case 2:
-      cout << postos << endl;
+      if(leuRobots && leuArmazens && leuAutomaticos)
+       cout << postos << endl;
+      else
+        cout << " >> Nao leu os ficheiros necessarios!" << endl;
       break;
 
     case 3:
-      cout << distanciasTempos << endl;
+      if(leuRobots && leuArmazens && leuAutomaticos)
+        cout << distanciasTempos << endl;
+      else
+        cout << " >> Nao leu os ficheiros necessarios!" << endl;
       break;
 
     case 4:
-      cout << "A sair..." << endl;
+      cout << " >> A terminar programa..." << endl;
+      sair = true;
       break;
 
     default:
-      cout << "Escolha invalida!" << endl;
+      cout << " >> Escolha inválida!" << endl;
+    }
   }
 
+
+}
+
+
+/**
+ * verifica se por cada n postos armazém devem existir 2^n postos automaticos, servidos por n robots.
+ * @return true se por cada n postos armazém devem existir 2^n postos automaticos, servidos por n robots.
+ */
+bool checkConfig(){
+    return(armazensQT == robotsQT && automaticosQT == pow((float)2,armazensQT));
 }
 
 /**
- * Shows a simple console menu
- * @return the choice
- */
-int showMenu(){
-
-      int choice = 0;
-
-      cout << "Menu: \n" ;
-      cout << " 1 - Listar robots\n" ;
-      cout << " 2 - Listar postos\n" ;
-      cout << " 3 - Listar tempos e distancias\n" ;
-      cout << " 4 - Sair\n";
-      cout << "\nEscolha a opcao: " << endl;
-      cin >> choice;
-
-  return choice;
-}
-
-/**
- * gets the quantity of armazens
- * @return quantity of armazens
- */
-int getArmazensQT(){
-    return armazensQT;
-}
-
-/**
- * sets the quantity of armazens
- * @param armQT quantity of armazens
- */
-void setArmazensQT(int armQT){
-    armazensQT = armQT;
-}
-
-/**
- * gets the quantity of armazens
- * @return quantity of armazens
- */
-int getRobotsQT(){
-    return robotsQT;
-}
-
-/**
- * sets the quantity of robots
- * @param rbtQT quantity of robots
- */
-void setRobotsQT(int rbtQT){
-    robotsQT = rbtQT;
-}
-
-/**
- * gets the quantity of automaticos
- * @return quantity of automaticos
- */
-int getAutomaticosQT(){
-    return automaticosQT;
-}
-
-/**
- * sets the quantity of automaticos
- * @param autQT quantity of automaticos
- */
-void setAutomaticosQT(int autQT){
-    automaticosQT = autQT;
-}
-
-/**
- * checks if the number of armazens is the same as the number of robots and if the number of automaticos is 2^armazens
- * @return true if it is a valid config
- */
-// bool checkConfig(){
-//     return(armazensQT == robotsQT || automaticosQT == pow(2,armazensQT));
-// }
-
-/**
- * Loads Armazens from file
- * @return 0 if successful or -1 if the file doesnt exist
+ * Lê o ficheiro que tem informações sobre os armazéns e insere os armazéns na fila de espera.
+ * @return false se o ficheiro nao existir, true caso o ficheiro exista.
  */
 int loadArmazens() {
    int lineNumber = 1;
    int quantity;
    int key;
-   int robotKey; /* suponho que Ã© pela key do robot que vamos buscar o robot associado */
+   int robotKey;
    double stock;
    double safety;
    string line;
 
-   ifstream fx1("FX1.csv"); /* opens the file */
+   ifstream fx1("FX1.csv"); /* abre o ficheiro */
 
    if(!fx1){
     cout << "FX1.csv nao existe!"<< endl;
    return -1;
    }
 
-  while(!fx1.eof()){ /* while it doesnt reach the end of the file */
-      getline(fx1,line,'\n'); /* the content of the line is saved */
+  while(!fx1.eof()){ /* enquanto nao chega ao final do ficheiro */
+      getline(fx1,line,'\n'); /* grava o conteúdo da linha */
       if(line.size() > 0 ) {
 
         if(lineNumber==1){
 
-            quantity = atoi(line.c_str()); /* quantity ( stored in the first row) */
-            setArmazensQT(quantity);
+            quantity = atoi(line.c_str()); /* quantidade ( armazenada na primeira linha do ficheiro ) */
+            armazensQT = quantity;
             lineNumber++;
 
         }else{
 
-        /* gets the content between commas, uses two 10 indexes variables to keep track of the position */
+        /* guarda o conteúdo entre linhas, auxiliado por duas variaveis indice, begin e pos */
 
         int begin = 0;
         int pos = line.find(',',begin);
@@ -263,20 +256,21 @@ int loadArmazens() {
 
         Robot auxRobot;
         Robot *apRobot = &auxRobot;
-        robots.encontra(robotKey, apRobot); // encontra o robot que tem a robot key armazenada na variavel robotKey
-        postos.insere(new Armazem(key,stock,safety,*apRobot));
+        robots.encontra(robotKey, apRobot); // encontra o robot que tem a robot key igual à armazenada na variavel robotKey
+        postos.insere(new Armazem(key,stock,safety,*apRobot)); // insere o armazém na lista de espera
     }
       }
  }
 
     fx1.close();
+    leuArmazens = true; /* leu com sucesso*/
     return 0;
 }
 
 
 /**
- * Loads Automaticos from file
- * @return 0 if successful or -1 if the file doesnt exist
+ * Lê o ficheiro que tem informações sobre os postos automáticos e insere os postos automáticos na fila de espera.
+ * @return false se o ficheiro nao existir, true caso o ficheiro exista.
  */
 int loadAutomaticos(){
    int key;
@@ -287,19 +281,19 @@ int loadAutomaticos(){
    string line;
 
 
-   ifstream fx2("FX2.csv"); /* opens the file */
+   ifstream fx2("FX2.csv"); /* abre o ficheiro */
 
    if(!fx2){
     cout << "FX2.csv nao existe!"<< endl;
    return -1;
    }
 
-  while(!fx2.eof()){ /* while it doesnt reach the end of the file */
-      getline(fx2,line,'\n'); /* the content of the line is saved */
+  while(!fx2.eof()){ /* enquanto nao chega ao final do ficheiro */
+      getline(fx2,line,'\n'); /* grava o conteúdo da linha */
       if(line.size() > 0 ) {
 
 
-        /* gets the content between commas, uses two indexes variables to keep track of the position */
+        /* guarda o conteúdo entre linhas, auxiliado por duas variaveis indice, begin e pos */
 
         int begin = 0;
         int pos = line.find(',',begin);
@@ -347,15 +341,16 @@ int loadAutomaticos(){
 
       }
  }
-    setAutomaticosQT(index-1);
+    automaticosQT = index-1;
     fx2.close();
+    leuAutomaticos = true; /* leu com sucesso*/
     return 0;
 }
 
 
 /**
- * Loads Robots from file
- * @return 0 if successful or -1 if the file doesnt exist
+ * Lê o ficheiro que tem informações sobre os robots e insere os robots na lista ligada.
+ * @return false se o ficheiro nao existir, true caso o ficheiro exista.
  */
 int loadRobots(){
     int index= robots.comprimento()+1;
@@ -372,11 +367,11 @@ int loadRobots(){
    return -1;
    }
 
-  while(!fx3.eof()){ /* while it doesnt reach the end of the file */
-      getline(fx3,line,'\n'); /* the content of the line is saved */
+  while(!fx3.eof()){ /* enquanto nao chega ao final do ficheiro */
+      getline(fx3,line,'\n'); /* grava o conteúdo da linha */
       if(line.size() > 0 ) {
 
-        /* gets the content between commas, uses two indexes variables to keep track of the position */
+         /* guarda o conteúdo entre linhas, auxiliado por duas variaveis indice, begin e pos */
 
         int begin = 0;
         int pos = line.find(',',begin);
@@ -418,14 +413,15 @@ int loadRobots(){
 
 
 
-        robots.insere(index, new Robot(key,cargoCap,cargoAvail, position));
+        robots.insere(index, new Robot(key,cargoCap,cargoAvail, position)); // insere o armazém na lista ligada
         index++;
 
 
       }
  }
-    setRobotsQT(index-1);
+    robotsQT=index-1;
     fx3.close();
+    leuRobots = true; /* leu com sucesso*/
     return 0;
 }
 
@@ -438,20 +434,22 @@ int loadTimeDists(){
     int keyPosto1;
     int keyPosto2;
     double distanceMeters;
-    double timeMinutes; /* time Ã© palavra reservada do c++ pelos vistos */
+    double timeMinutes;
     string line;
 
 
-   ifstream fx4("FX4.csv"); /* opens the file */
+   ifstream fx4("FX4.csv"); /* abre o ficheiro */
 
    if(!fx4){
     cout << "FX4.csv nao existe!"<< endl;
    return -1;
    }
 
-  while(!fx4.eof()){ /* while it doesnt reach the end of the file */
-      getline(fx4,line,'\n'); /* the content of the line is saved */
+  while(!fx4.eof()){ /* enquanto nao chega ao final do ficheiro */
+      getline(fx4,line,'\n'); /* grava o conteúdo da linha */
       if(line.size() > 0 ) {
+
+         /* guarda o conteúdo entre linhas, auxiliado por duas variaveis indice, begin e pos */
 
         int begin = 0;
         int pos = line.find(',',begin);
@@ -491,32 +489,7 @@ int loadTimeDists(){
 
         pos++;
 
-      DstTime a(distanceMeters,timeMinutes);
-      
-      // cout << keyPosto2 << endl;
-
-
-
-      // distanciasTempos.insert(DstTime(10,1),0,3);
-      // distanciasTempos.insert(DstTime(15,1),0,6);
-      // distanciasTempos.insert(DstTime(10,1),1,5);
-      // distanciasTempos.insert(DstTime(20,2),1,9);
-      // distanciasTempos.insert(DstTime(10,1),2,9);
-      // distanciasTempos.insert(DstTime(20,2),2,11);
-      // distanciasTempos.insert(DstTime(10,1),3,4);
-      // distanciasTempos.insert(DstTime(15,1),3,6);
-      // distanciasTempos.insert(DstTime(10,1),4,5);
-      // distanciasTempos.insert(DstTime(15,2),4,7);
-      // distanciasTempos.insert(DstTime(10,1),5,8);
-      // distanciasTempos.insert(DstTime(10,1),6,7);
-      // distanciasTempos.insert(DstTime(15,2),6,11);
-      // distanciasTempos.insert(DstTime(10,1),7,8);
-      // distanciasTempos.insert(DstTime(10,1),7,11);
-      // distanciasTempos.insert(DstTime(20,2),2,10);
-
-
-      distanciasTempos.insert(a,keyPosto1,keyPosto2);
-      // cout << "INSERIDO " << a << endl;
+        distanciasTempos.insert(DstTime(distanceMeters,timeMinutes),keyPosto1,keyPosto2); // insere o armazém na matriz dinámica
 
       }
  }
