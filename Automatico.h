@@ -39,6 +39,7 @@ public:
     double getProcSpeed();
     void setRequest(double rp);
     void setProcSpeed(double pSp);
+    void getSupplies(double qt);
 
     /* sobrecarga de operadores de comparação */
     bool operator == (const Automatico &a) const;
@@ -135,6 +136,15 @@ void Automatico::setProcSpeed(double pSp){
     pSp > 0 ? procSpeed = pSp : procSpeed = 0;
 }
 
+/**
+* Método público que faz o abastecimento, a quantidade
+* abastecida é passada por parâmetro.
+* @param qt quantidade de stock  que foi abastecida
+*/
+void Automatico::getSupplies(double qt){
+    /* valida se qt > 0, caso contrário qt = 0 */
+    qt > 0 ? Posto::setStock(Posto::getStock()+ qt) : Posto::setStock(Posto::getStock());
+}
 
 /**
  * Método de escrita, imprime no ecrã toda a informação sobre o posto automático,
