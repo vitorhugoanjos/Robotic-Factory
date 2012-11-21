@@ -40,6 +40,7 @@ public:
     Robot getRobot();
     void setSafety(double sap);
     void setRobot(Robot rp);
+    void getSupplies();
 
     /* sobrecarga de operadores de comparação */
     bool operator == (const Armazem &a) const;
@@ -132,6 +133,14 @@ void Armazem::setSafety(double sap){
  */
 void Armazem::setRobot(Robot rp){
     robot = rp;
+}
+
+/**
+* Método público que faz o abastecimento, a quantidade
+* abastecida é três vezes a quantidade de segurança do armazém.
+*/
+void Armazem::getSupplies(){
+    Posto::setStock(safety*3);
 }
 
 

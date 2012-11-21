@@ -47,6 +47,8 @@ public:
     void setCargoCap(double cCp);
     void setCargoAvail(double cAp);
     void setPosition(int pp);
+    void supply(double qt);
+    void getSupplies();
 
     /* sobrecarga de operadores de comparação */
     bool operator == (const Robot &e) const;
@@ -192,6 +194,22 @@ void Robot::setPosition(int pp){
     pp > 0 ? position = pp : position = 0;
 }
 
+/**
+ * Método público que abastece um posto
+ * @param qt    quantidade de stock a abastecer
+ */
+void Robot::supply(double qt){
+    if(qt > 0)
+     setCargoAvail(getCargoAvail()-qt);
+}
+
+/**
+ * Método público para receber abastecimento
+ */
+void Robot::getSupplies(){
+    if(cargoAvail == 0)
+        setCargoAvail(cargoCap); 
+}
 
 /**
  * Método de escrita, imprime no ecrã toda a informação sobre o robot,
