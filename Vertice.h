@@ -11,13 +11,14 @@ template<class TV, class TR>	//Classe dos vertices do grafo
 class Vertice
 {
 	friend class ListAdjGrafo<TV, TR>;
+
  
 	private:
+		Ramo<TV,TR>* apramo;
 		TV vconteudo;
 		int key ;
 		Vertice<TV,TR>* apvertice;
-		Ramo<TV,TR>* apramo;
-
+		
 	public:
 		Vertice();
 		Vertice(const TV& conteudo, int k);

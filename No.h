@@ -21,6 +21,7 @@ class No
     friend class Lista<T>;
     friend class Queue<T>;
     friend class Lista_Iterador<T>;
+	friend class Stack<T>;
 
     private:
         T info;

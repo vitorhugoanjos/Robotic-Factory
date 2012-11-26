@@ -1,4 +1,4 @@
-/* Projecto ESINF - 2Âº ano LEI -ISEP
+/* Projecto ESINF - 2º ano LEI -ISEP
  * Outubro 2012
  *
  * File:   Posto.h
@@ -13,40 +13,40 @@
 using namespace std;
 
 /**
- * Superclasse POSTO: topo da hierarquia de classes, Ã© superclasse de ARMAZEM e
- * AUTOMÃTICO. Nas classes derivadas poderÃ£o ser instanciados objectos dos tipos
+ * Superclasse POSTO: topo da hierarquia de classes, é superclasse de ARMAZEM e
+ * AUTOMÁTICO. Nas classes derivadas poderão ser instanciados objectos dos tipos
  * referidos.
- * @author JoÃ£o Carreira, Vitor Hugo Anjos
+ * @author João Carreira, Vitor Hugo Anjos
  * @version 1.0 (Oct 2012)
  */
 class Posto{
 
 private:
-    /* chave do posto: cada posto Ã© identificado por um nÂº inteiro > 0; esta key
-     * tem que ser Ãºnica entre os vÃ¡rios postos */
+    /* chave do posto: cada posto é identificado por um nº inteiro > 0; esta key
+     * tem que ser única entre os vários postos */
     int key;
-    /* quantidade de matÃ©ria-prima que o posto tem em stock; representa uma dada
+    /* quantidade de matéria-prima que o posto tem em stock; representa uma dada
      * quantidade, em kg) */
     double stock;
 
 public:
-    /* protÃ³tipos de construtores e destrutor */
+    /* protótipos de construtores e destrutor */
     Posto();
     Posto(int kp, double sp);
     Posto(const Posto &p);
     virtual ~Posto();
 
-    /* protÃ³tipos de GETS e SETS */
+    /* protótipos de GETS e SETS */
     int getKey();
     double getStock();
     void setKey(int kp);
     void setStock(double sp);
 
-    /* sobrecarga de operadores de comparaÃ§Ã£o */
+    /* sobrecarga de operadores de comparação */
     bool operator == (const Posto &p) const;
     bool operator > (const Posto &p) const;
 
-    /* sobrecarga do operadtor de atribuiÃ§Ã£o */
+    /* sobrecarga do operadtor de atribuição */
     const Posto &operator = (const Posto &p);
 
     /* sobrecarga do operador de stream out */
@@ -56,7 +56,7 @@ public:
 
 
 /**
- * Construtor sem parÃ¢metros, cria um posto com chave e quantidade de stock
+ * Construtor sem parâmetros, cria um posto com chave e quantidade de stock
  * iguais a zero
  */
 Posto::Posto(){
@@ -66,10 +66,10 @@ Posto::Posto(){
 
 
 /**
- * Construtor com parÃ¢metros: cria um objecto do tipo POSTO, com os parÃ¢metros
+ * Construtor com parâmetros: cria um objecto do tipo POSTO, com os parâmetros
  * kp (keyParameter) e sp (stockParameter)
- * @param kp    Ã© a chava a atribuir ao posto
- * @param sp    Ã© quantidade de matÃ©ria-prima que o posto dispÃµe
+ * @param kp    é a chava a atribuir ao posto
+ * @param sp    é quantidade de matéria-prima que o posto dispõe
  */
 Posto::Posto(int kp, double sp){
     setKey(kp);
@@ -78,10 +78,10 @@ Posto::Posto(int kp, double sp){
 
 
 /**
- * Construtor cÃ³pia: cria uma cÃ³pia de um objecto do tipo POSTO, passado por
- * referÃªncia
- * @param p     Ã© a referÃªncia do objecto do tipo Posto (declarada como const de
- *              forma a que o objecto copiado nÃ£o sofra alteraÃ§Ãµes)
+ * Construtor cópia: cria uma cópia de um objecto do tipo POSTO, passado por
+ * referência
+ * @param p     é a referência do objecto do tipo Posto (declarada como const de
+ *              forma a que o objecto copiado não sofra alterações)
  */
 Posto::Posto(const Posto &p){
     key = p.key;
@@ -90,15 +90,15 @@ Posto::Posto(const Posto &p){
 
 
 /**
- * Destrutor para objectos do tipo POSTO (sem definiÃ§Ã£o)
+ * Destrutor para objectos do tipo POSTO (sem definição)
  */
 Posto::~Posto(){
 }
 
 
 /**
- * MÃ©todo de acesso pÃºblico Ã  chave do posto
- * @return      Ã© a chave do posto
+ * Método de acesso público à chave do posto
+ * @return      é a chave do posto
  */
 int Posto::getKey(){
     return key;
@@ -106,8 +106,8 @@ int Posto::getKey(){
 
 
 /**
- * MÃ©todo de acesso pÃºblico ao stock de materÃ­a-prima presente no posto
- * @return      Ã© a quantidade de matÃ©ria-prima presente no posto
+ * Método de acesso público ao stock de matería-prima presente no posto
+ * @return      é a quantidade de matéria-prima presente no posto
  */
 double Posto::getStock(){
     return stock;
@@ -115,26 +115,26 @@ double Posto::getStock(){
 
 
 /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o da chave do posto
- * @param       Ã© a chave a atribuir ao posto
+ * Método público de modificação da chave do posto
+ * @param       é a chave a atribuir ao posto
  */
 void Posto::setKey(int kp){
-    /* validar key, tem que ser positivo, caso contrÃ¡rio atribui 0 */
+    /* validar key, tem que ser positivo, caso contrário atribui 0 */
     kp > 0 ? key = kp : key = 0;
 }
 
 
 /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o do stock presente no posto
- * @param       Ã© a quantidade de matÃ©ria-prima, em kg, a atribuir ao posto
+ * Método público de modificação do stock presente no posto
+ * @param       é a quantidade de matéria-prima, em kg, a atribuir ao posto
  */
 void Posto::setStock(double sp){
-    /* valida se stock > 0, caso contrÃ¡rio stock = 0 */
+    /* valida se stock > 0, caso contrário stock = 0 */
     sp > 0 ? stock = sp : stock = 0;
 }
 
 /**
- * MÃ©todo de escrita, imprime no ecrÃ£ a chave do posto e a quantidade de matÃ©ria
+ * Método de escrita, imprime no ecrã a chave do posto e a quantidade de matéria
  * -prima presente em stock
  * @param out
  */
@@ -146,11 +146,11 @@ void Posto::write(ostream &out) const{
 
 
 /**
- * sobrecarga de operador de comparaÃ§Ã£o, para verificar se dois postos sÃ£o
- * iguais em termos de quantidade de stock de matÃ©ria-prima
- * @param p     Ã© a referÃªncia de um objecto do tipo posto
- * @return      TRUE, caso ambos os posto tenham a mesma quantidade de matÃ©ria-
- *              prima; FALSE, caso as quantidades de matÃ©ria-prima sejam
+ * sobrecarga de operador de comparação, para verificar se dois postos são
+ * iguais em termos de quantidade de stock de matéria-prima
+ * @param p     é a referência de um objecto do tipo posto
+ * @return      TRUE, caso ambos os posto tenham a mesma quantidade de matéria-
+ *              prima; FALSE, caso as quantidades de matéria-prima sejam
  *              diferentes
  */
 bool Posto::operator == (const Posto &p) const{
@@ -162,11 +162,11 @@ bool Posto::operator == (const Posto &p) const{
 
 
 /**
- * sobrecarga do operador >, para verificar se a quantidade de matÃ©ria-prima
- * presente num dado posto Ã© superior Ã  de outro
- * @param p     Ã© a referÃªncia de um objecto do tipo POSTO
- * @return      TRUE, caso a quantidade de matÃ©ria-prima presente num posto seja
- *              maior do que a daquele com que Ã© comparado; FALSE, no caso
+ * sobrecarga do operador >, para verificar se a quantidade de matéria-prima
+ * presente num dado posto é superior à de outro
+ * @param p     é a referência de um objecto do tipo POSTO
+ * @return      TRUE, caso a quantidade de matéria-prima presente num posto seja
+ *              maior do que a daquele com que é comparado; FALSE, no caso
  *              oposto
  */
 bool Posto::operator > (const Posto &p) const{
@@ -175,9 +175,9 @@ bool Posto::operator > (const Posto &p) const{
 
 
 /**
- * sobrecarga do operador de atribuiÃ§Ã£o =, para atribuir, de forma directa, um
+ * sobrecarga do operador de atribuição =, para atribuir, de forma directa, um
  * objecto do tipo POSTO a outro
- * @param p     referÃªncia para um objecto do tipo Posto
+ * @param p     referência para um objecto do tipo Posto
  * @return      apontador para o objecto corrente
  */
 const Posto & Posto::operator = (const Posto &p){
@@ -189,9 +189,9 @@ const Posto & Posto::operator = (const Posto &p){
 
 /**
  * Sobrecarga do operador de stream out
- * @param out   referÃªncia do standard output
- * @param p     referÃªncia de um objecto do tipo Posto
- * @return      referÃªncia do standard output
+ * @param out   referência do standard output
+ * @param p     referência de um objecto do tipo Posto
+ * @return      referência do standard output
  */
 ostream &operator << (ostream &out, const Posto &p){
     p.write(out);

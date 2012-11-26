@@ -1,4 +1,4 @@
-/* Projecto ESINF - 2Âº ano LEI -ISEP
+/* Projecto ESINF - 2º ano LEI -ISEP
  * Outubro 2012
  *
  * File:   Posto.h
@@ -15,36 +15,36 @@ using namespace std;
 
 /*
  * Subclasse AUTOMATICO: derivada de POSTO, permite instanciar objectos do tipo AUTOMATICO, que representa
- * objectos dos postos automÃ¡tico de trabalho; herda os atributos key e stock de POSTO.
- * @author JoÃ£o Carreira, Vitor Hugo Anjos
+ * objectos dos postos automático de trabalho; herda os atributos key e stock de POSTO.
+ * @author João Carreira, Vitor Hugo Anjos
  * @version: 1.0 (Oct 2012)
  */
 class Automatico : public Posto{
 
 private:
-    /* quantidade de matÃ©ria-prima a requisitar (representa unidades em kg) */
+    /* quantidade de matéria-prima a requisitar (representa unidades em kg) */
     double request;
-    /* velocidade de operaÃ§Ã£o (representa unidades em kg/min) */
+    /* velocidade de operação (representa unidades em kg/min) */
     double procSpeed;
 
 public:
-    /* protÃ³tipos de construtores e destrutor */
+    /* protótipos de construtores e destrutor */
     Automatico();
     Automatico(int kp, double sp, double rp, double pSp);
     Automatico(const Automatico &a);
     ~Automatico();
 
-    /* protÃ³tipos de GETS e SETS */
+    /* protótipos de GETS e SETS */
     double getRequest();
     double getProcSpeed();
     void setRequest(double rp);
     void setProcSpeed(double pSp);
 
-    /* sobrecarga de operadores de comparaÃ§Ã£o */
+    /* sobrecarga de operadores de comparação */
     bool operator == (const Automatico &a) const;
     bool operator > (const Automatico &a) const;
 
-    /* sobrecarga do operadtor de atribuiÃ§Ã£o */
+    /* sobrecarga do operadtor de atribuição */
     const Automatico &operator = (const Automatico &a);
 
     /* sobrecarga do operador de stream out */
@@ -53,8 +53,8 @@ public:
 };
 
 /**
- * Construtor sem parÃ¢metros, cria um posto AUTOMATICO com matÃ©ria-prima a requisitar
- * e velocidade de operaÃ§Ã£o a zero; invoca o construtor sem parÃ¢metros da superclasse POSTO
+ * Construtor sem parâmetros, cria um posto AUTOMATICO com matéria-prima a requisitar
+ * e velocidade de operação a zero; invoca o construtor sem parâmetros da superclasse POSTO
  */
 Automatico::Automatico():Posto(){
     setRequest(0);
@@ -63,13 +63,13 @@ Automatico::Automatico():Posto(){
 
 
 /**
- * Construtor com parÃ¢metros: cria um objecto do tipo AUTOMATICO, com os parÃ¢metros key e
- * stock (herdados de POSTO), request e procSpeed; invoca o construtor com parÃ¢metros de
+ * Construtor com parâmetros: cria um objecto do tipo AUTOMATICO, com os parâmetros key e
+ * stock (herdados de POSTO), request e procSpeed; invoca o construtor com parâmetros de
  * POSTO
- * @param kp    Ã© a chave a atribuir ao posto automÃ¡tico (herdado de POSTO)
- * @param sp    Ã© a quantidade de matÃ©ria-prima que o posto automÃ¡tico dispÃµe (herdado de POSTO)
- * @param rp    Ã© a quantidade de matÃ©ria-prima que o posto automÃ¡tico requisita
- * @param pSp   Ã© a velocidade de operaÃ§Ã£o do posto automÃ¡tico
+ * @param kp    é a chave a atribuir ao posto automático (herdado de POSTO)
+ * @param sp    é a quantidade de matéria-prima que o posto automático dispõe (herdado de POSTO)
+ * @param rp    é a quantidade de matéria-prima que o posto automático requisita
+ * @param pSp   é a velocidade de operação do posto automático
  */
 Automatico::Automatico(int kp, double sp, double rp, double pSp):Posto(kp, sp){
     setRequest(rp);
@@ -78,10 +78,10 @@ Automatico::Automatico(int kp, double sp, double rp, double pSp):Posto(kp, sp){
 
 
 /**
- * Construtor cÃ³pia: cria uma cÃ³pia de um objecto do tipo AUTOMATICO, passado por
- * referÃªncia
- * @param a     Ã© a referÃªncia do objecto do tipo AUTOMATICO (declarada como const de
- *              forma a que o objecto copiado nÃ£o sofra alteraÃ§Ãµes)
+ * Construtor cópia: cria uma cópia de um objecto do tipo AUTOMATICO, passado por
+ * referência
+ * @param a     é a referência do objecto do tipo AUTOMATICO (declarada como const de
+ *              forma a que o objecto copiado não sofra alterações)
  */
 Automatico::Automatico(const Automatico &a):Posto(a){
     request = a.request;
@@ -90,16 +90,16 @@ Automatico::Automatico(const Automatico &a):Posto(a){
 
 
 /**
- * Destrutor para objectos do tipo POSTO (sem definiÃ§Ã£o)
+ * Destrutor para objectos do tipo POSTO (sem definição)
  */
 Automatico::~Automatico(){
 }
 
 
 /**
- * MÃ©todo de acesso pÃºblico Ã  quantidade de matÃ©ria-prima requisitada pelo posto
- * automÃ¡tico
- * @return      quantidade de matÃ©ria-prima requisitada
+ * Método de acesso público à quantidade de matéria-prima requisitada pelo posto
+ * automático
+ * @return      quantidade de matéria-prima requisitada
  */
 double Automatico::getRequest(){
     return request;
@@ -107,8 +107,8 @@ double Automatico::getRequest(){
 
 
 /**
- * MÃ©todo de acesso pÃºblico Ã  velocidade de operaÃ§Ã£o do posto automÃ¡tico
- * @return      velocidade de operaÃ§Ã£o
+ * Método de acesso público à velocidade de operação do posto automático
+ * @return      velocidade de operação
  */
 double Automatico::getProcSpeed(){
     return procSpeed;
@@ -116,31 +116,31 @@ double Automatico::getProcSpeed(){
 
 
 /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o da quantidade de matÃ©ria-prima requisitada pelo
- * posto automÃ¡tico
- * @param rp    quantidade de matÃ©ria-prima requisitada
+ * Método público de modificação da quantidade de matéria-prima requisitada pelo
+ * posto automático
+ * @param rp    quantidade de matéria-prima requisitada
  */
 void Automatico::setRequest(double rp){
-    /* valida se request > 0, caso contrÃ¡rio request = 0 */
+    /* valida se request > 0, caso contrário request = 0 */
     rp > 0 ? request = rp : request = 0;
 }
 
 
 /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o da velocidade de operaÃ§Ã£o do posto automÃ¡tico
- * @param pSp   velocidade de operaÃ§Ã£o do posto automÃ¡tico
+ * Método público de modificação da velocidade de operação do posto automático
+ * @param pSp   velocidade de operação do posto automático
  */
 void Automatico::setProcSpeed(double pSp){
-    /* valida se procSpeed > 0, caso contrÃ¡rio procSpeed = 0 */
+    /* valida se procSpeed > 0, caso contrário procSpeed = 0 */
     pSp > 0 ? procSpeed = pSp : procSpeed = 0;
 }
 
 
 /**
- * MÃ©todo de escrita, imprime no ecrÃ£ toda a informaÃ§Ã£o sobre o posto automÃ¡tico,
- * nomeadamente a sua chave de identicaÃ§Ã£o e quantidade de matÃ©ria-prima
- * em stock (invocando o mÃ©todo de escrita da superclasse POSTO), a quantidade
- * de matÃ©ria-prima requisitada e a sua velocidade de operaÃ§Ã£o
+ * Método de escrita, imprime no ecrã toda a informação sobre o posto automático,
+ * nomeadamente a sua chave de identicação e quantidade de matéria-prima
+ * em stock (invocando o método de escrita da superclasse POSTO), a quantidade
+ * de matéria-prima requisitada e a sua velocidade de operação
  * @param out
  */
 void Automatico::write(ostream &out) const{
@@ -152,12 +152,12 @@ void Automatico::write(ostream &out) const{
 
 
 /**
- * sobrecarga de operador de comparaÃ§Ã£o, para verificar se dois postos automÃ¡ticos
- * sÃ£o iguais em termos de quantidade de matÃ©ria-prima em stock; invoca o operador
+ * sobrecarga de operador de comparação, para verificar se dois postos automáticos
+ * são iguais em termos de quantidade de matéria-prima em stock; invoca o operador
  * sobrecarregado == da superclasse POSTO
- * @param a     Ã© a referÃªncia para um objecto do tipo AUTOMATICO
- * @return      TRUE se tiverem a mesma quantidade de matÃ©ria-prima em stock, caso
-                contrÃ¡rio devolve FALSE
+ * @param a     é a referência para um objecto do tipo AUTOMATICO
+ * @return      TRUE se tiverem a mesma quantidade de matéria-prima em stock, caso
+                contrário devolve FALSE
  */
 bool Automatico::operator == (const Automatico &a) const{
     return Posto::operator ==(a);
@@ -165,12 +165,12 @@ bool Automatico::operator == (const Automatico &a) const{
 
 
 /**
- * sobrecarga do operador >, para verificar se o stock de matÃ©ria-prima de um
- * posto armazÃ©m Ã© maior do que a de outro; invoca o operador sobrecarregado >
+ * sobrecarga do operador >, para verificar se o stock de matéria-prima de um
+ * posto armazém é maior do que a de outro; invoca o operador sobrecarregado >
  * da superclasse POSTO
- * @param a     Ã© a referÃªncia para um objecto do tipo AUTOMATICO
- * @return      TRUE se a quantidade de metÃ©ria-prima em stock fÃ´r superior, caso
-                contrÃ¡rio devolve FALSE
+ * @param a     é a referência para um objecto do tipo AUTOMATICO
+ * @return      TRUE se a quantidade de metéria-prima em stock fôr superior, caso
+                contrário devolve FALSE
  */
 bool Automatico::operator > (const Automatico &a) const{
     return Posto::operator >(a);
@@ -178,10 +178,10 @@ bool Automatico::operator > (const Automatico &a) const{
 
 
 /**
- * sobrecarga do operador de atribuiÃ§Ã£o = para atribuir, directamente, um objecto
+ * sobrecarga do operador de atribuição = para atribuir, directamente, um objecto
  * do tipo AUTOMATICO a outro; invoca o operador sobrecarregado = da superclasse
- * POSTO de forma a que os atributos da superclasse sejam tambÃ©m atribuÃ­dos
- * @param a     Ã© a referÃªncia para um objecto do tipo AUTOMATICO
+ * POSTO de forma a que os atributos da superclasse sejam também atribuídos
+ * @param a     é a referência para um objecto do tipo AUTOMATICO
  * @return      apontador para o objecto corrente
  */
 const Automatico & Automatico::operator = (const Automatico &a){
@@ -194,9 +194,9 @@ const Automatico & Automatico::operator = (const Automatico &a){
 
 /**
  * Sobrecarga do operador de stream out
- * @param out   referÃªncia do standard output
- * @param a     referÃªncia de um objecto do tipo AUTOMATICO
- * @return      referÃªncia do standard output
+ * @param out   referência do standard output
+ * @param a     referência de um objecto do tipo AUTOMATICO
+ * @return      referência do standard output
  */
 ostream &operator << (ostream &out, const Automatico &a){
     a.write(out);

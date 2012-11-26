@@ -30,6 +30,7 @@ using namespace std;
 
 
 
+
 /* Lista ligada de robots */
 Lista<Robot*> robots;
 
@@ -93,18 +94,27 @@ bool validarGrafo();
 /* Prototipo do método estadoFabrica */
 void estadoFabrica();
 
-/*Prototipo do metodo mostrarGrafo */
+/* Prototipo do metodo mostrarGrafo */
 void mostrarGrafo();
+
+/* Protótipos dos métodos abastecerAut e abastecerArm */
+void abastecerAut(int pNum);
+void abastecerArm(int pNum);
+
+/* Prototipo para procuraRobot */
+void procuraRobots(int v[], int numRobots);
+
+/* Protótipos dos métodos que actualizam robots/postos/armazens */
+void abastecerAutomatico(Automatico &a, Robot &r); 
+void abastecerArmazem(Armazem &a, Robot &r); 
+bool abastecerRobot(Armazem &a, Robot &r);
+
+
+
 
 bool automaticoExiste(int key);
 
 bool armazemExiste(int key);
-
-void abastecerAutomatico(Automatico &a, Robot &r); 
-
-void abastecerArmazem(Armazem &a, Robot &r); 
-
-bool abastecerRobot(Armazem &a, Robot &r);
 
 
 int main(int argc, char** argv) {
@@ -150,6 +160,8 @@ void showMenu(){
   while(!sair){
 
     int choice = 0;
+	cout << endl;
+	cout << endl;
     cout << "*****************************************" << endl;
     cout << "*                                       *" << endl;
     cout << "*           FABRICA ROBOTIZADA          *" << endl;
@@ -215,65 +227,28 @@ void showMenu(){
         cout << "\n >> O posto automatico que escolheu nao existe!" << endl;
       else{
         cout << "\n >> A abastecer o posto automatico " << pNum << "...\n\n" << endl;
-        
-        Posto* tPosto;
-        Automatico* tAutomatico;
-        Automatico* tAutomatico2;
-        Robot *tRobot;
-        int cont = 0;
-
-        while(cont < postos.comprimento()){
-          postos.retira(tPosto);
-          if(strcmp(typeid(*tPosto).name(), typeid(Automatico).name()) == 0 ){
-              tAutomatico = dynamic_cast<Automatico*>(tPosto);
-                  if(tAutomatico->getKey() == pNum)
-                   tAutomatico2 = tAutomatico;
-              }
-              postos.insere(tPosto);  
-              cont++;
-            }
-
-       robots.encontra(1, tRobot);
-       abastecerAutomatico(*tAutomatico2, *tRobot);
-        
-     
+		abastecerAut(pNum);
+		//estadoFabrica();
       }
       break;
 
     case 7:
+      int pNumA;
       cout << "Abastecer o Armazem numero: ";
-      int aNum;
-      cin >> aNum;
-
-      if(!armazemExiste(aNum))
-        cout << "\n >> O armazem que escolheu nao existe!" << endl;
+      cin >> pNumA;
+      if(!armazemExiste(pNumA))
+        cout << "\n >> O posto armazem que escolheu nao existe!" << endl;
       else{
-        cout << "\n >> A abastecer o armazem " << aNum << "...\n\n" << endl;
-         Posto* tPosto;
-         Armazem* tArmazem;
-         Armazem* tArmazem2;
-         Robot *tRobot;
-         int cont = 0;
-
-         while(cont < postos.comprimento()){
-           postos.retira(tPosto);
-           if(strcmp(typeid(*tPosto).name(), typeid(Armazem).name()) == 0 ){
-               tArmazem = dynamic_cast<Armazem*>(tPosto);
-                   if(tArmazem->getKey() == pNum)
-                    tArmazem2 = tArmazem;
-               }
-               postos.insere(tPosto);  
-               cont++;
-             }
-
-        robots.encontra(1, tRobot);
-        abastecerArmazem(*tArmazem2, *tRobot);
+        cout << "\n >> A abastecer o posto armazem " << pNumA << "...\n\n" << endl;
+		abastecerArm(pNumA);
+		//estadoFabrica();
       }
       break;
 
     case 8:
       cout << " >> A terminar programa..." << endl;
       sair = true;
+	  break;
 
     default:
       cout << " >> Escolha invalida!" << endl;
@@ -282,145 +257,6 @@ void showMenu(){
 
 
 }
-
-
-bool abastecerRobot(Armazem &a, Robot &r){
-  Robot* pRobot = &r;
-  Armazem* pArmazem = &a;
-
-  pRobot->setPosition(pArmazem->getKey());
-  if(pArmazem->getStock()-pArmazem->getSafety() >= pRobot->getCargoCap()){
-    pRobot->setCargoAvail(pRobot->getCargoCap());
-    pArmazem->setStock(pArmazem->getStock()-pRobot->getCargoCap());
-    return true;
-  }else{
-    cout << "O armazem " << pArmazem->getKey() <<" nao tem stock suficiente para abastecer o robot " << pRobot->getRobotKey() << "." << endl;
-    return false;
-  }
-
-}
-
-void abastecerArmazem(Armazem &a, Robot &r){
-   // isto aqui foi so para ter um armazem para poder testar
-    Posto* tPosto;
-    Armazem* tArmazem;
-    Armazem* tArmazem2;
-    int cont = 0;
-
-    while(cont < postos.comprimento()){
-
-    postos.retira(tPosto);
-      if(strcmp(typeid(*tPosto).name(), typeid(Armazem).name()) == 0 ){
-          tArmazem = dynamic_cast<Armazem*>(tPosto);
-              if(tArmazem->getKey() == 0)
-                tArmazem2=tArmazem;
-          }
-          postos.insere(tPosto);  
-          cont++;
-      }
-    // acaba aqui 
-    
-  Robot * pRobot = &r;
-  Armazem * pArmazem = &a;
-  double resto;
-
-  pRobot->setPosition(pArmazem->getKey());// robot viaja para este posto
-
-  if(pRobot->getCargoAvail() >= pArmazem->getSafety()*3){ // se stock_robot >= stock_segurança * 3
-    pRobot->setCargoAvail(pRobot->getCargoAvail()-pArmazem->getSafety()*3); // stock_robot -= stock_segurança * 3
-    pArmazem->setStock(pArmazem->getStock()+pArmazem->getSafety()*3); // stock_armazem += stock_segurança * 3
-
-    if(pRobot->getCargoAvail() == 0) // abastecer robot se tiver 0 de stock
-      abastecerRobot(*tArmazem2,*pRobot);
-  }else{
-
-    resto = pArmazem->getSafety()*3;
-    
-    while(resto != 0){
-      pArmazem->setStock(pArmazem->getStock()+pRobot->getCargoAvail()); // stock_armazem += stock_robot
-      pRobot->setCargoAvail(0); // stock_robot = 0
-
-      if(abastecerRobot(*tArmazem2,*pRobot)){ // stock_robot = full
-
-        pRobot->setPosition(pArmazem->getKey()); // robot volta ao posto
-        if((resto - pRobot->getCargoAvail()) < pRobot->getCargoAvail()){
-          pArmazem->setStock(pArmazem->getStock()+(resto - pRobot->getCargoAvail())); // stock_armazem += (resto-stock_robot)
-          resto = 0;
-        }else{
-          resto -= pRobot->getCargoAvail(); // resto -= stock_robot
-        }
-      }else{
-        resto = 0;
-        cout << "Nao ha materia-prima suficiente no armazem para abastecer este posto." << endl;
-      }
-    }
-
-    estadoFabrica();
-
-      }
-    }
-
-void abastecerAutomatico(Automatico &a , Robot &r){
-    // isto aqui foi so para ter um armazem para poder testar
-    Posto* tPosto;
-    Armazem* tArmazem;
-    Armazem* tArmazem2;
-    int cont = 0;
-
-    while(cont < postos.comprimento()){
-
-    postos.retira(tPosto);
-      if(strcmp(typeid(*tPosto).name(), typeid(Armazem).name()) == 0 ){
-          tArmazem = dynamic_cast<Armazem*>(tPosto);
-              if(tArmazem->getKey() == 0)
-                tArmazem2=tArmazem;
-          }
-          postos.insere(tPosto);  
-          cont++;
-      }
-    // acaba aqui 
-
-  Robot * pRobot = &r;
-  Automatico * pAutomatico = &a;
-  double resto;
-
-  pRobot->setPosition(pAutomatico->getKey()); // robot viaja para este posto
-
-  if(pRobot->getCargoAvail() >= pAutomatico->getRequest()){ // se stock_robot >= stock_requesitado
-    pRobot->setCargoAvail(pRobot->getCargoAvail()-pAutomatico->getRequest()); // stock_robot -= stock_requesitado
-    pAutomatico->setStock(pAutomatico->getStock()+pAutomatico->getRequest()); // stock_automatico += stock_requesitado
-
-    if(pRobot->getCargoAvail() == 0) // abastecer robot se tiver 0 de stock
-      abastecerRobot(*tArmazem2, *pRobot);
-
-  }else{
-    resto = pAutomatico->getRequest();
-
-    while(resto != 0){
-      pAutomatico->setStock(pAutomatico->getStock()+pRobot->getCargoAvail()); // stock_automatico += stock_robot
-      pRobot->setCargoAvail(0); // stock_robot = 0
-
-      if(abastecerRobot(*tArmazem2, *pRobot)){ // stock_robot  = full
-
-        pRobot->setPosition(pAutomatico->getKey()); // robot volta ao posto
-
-        if((resto - pRobot->getCargoAvail()) < pRobot->getCargoAvail()){
-          pAutomatico->setStock(pAutomatico->getStock()+(resto - pRobot->getCargoAvail())); // stock_automatico += (resto-stock_robot)
-          resto = 0;
-        }else{
-          resto -= pRobot->getCargoAvail(); // resto -= stock_robot
-        }
-      }else{
-        resto = 0;
-        cout << "Nao ha materia-prima suficiente no armazem para abastecer este posto." << endl;
-      }
-    }
-
-    estadoFabrica();
-  }
-
-}
-
 
 bool automaticoExiste(int key){
   bool existe= false;
@@ -505,7 +341,7 @@ void construirGrafo() {
   DstTime blank;
   /* percorrer a matriz dinâmica à procura de objectos DstTime */
   for(int i = 0; i <= distanciasTempos.getCap()-1; i++){
-      for(int j = i; j <= distanciasTempos.getCap()-1; j++){
+      for(int j = 0; j <= distanciasTempos.getCap()-1; j++){
           /* guardar em tempDt o objecto DstTime que está na posição i j */
           DstTime tempDt = distanciasTempos.returnElem(i,j);
           /* se objecto DstTime for diferente de blank, entao esse objecto
@@ -522,13 +358,290 @@ void construirGrafo() {
   }
 }
 
+void abastecerAut(int x){
+	// vai à lista de robots ver quantos robots existem na presente configuracao da fabrica
+	int numRobots = robots.comprimento();
+	// vector de inteiros para guardar as posiçoes dos robots
+	int vecRobot[100];
+	// procura onde estao os robots e guarda as suas posicoes no vector
+	procuraRobots(vecRobot, numRobots);
+	/* código que se segue permite encontrar um caminho entre o posto introduzido
+	pelo utilizador e cada um dos postos onde se encontre o robot */
+	// posto inicial (posto introduzido pelo utilizador
+	Vertice<Posto*,DstTime> *inicial = grafo.encvert_keyPosto(x);
+	// executa o algoritmo de procura caminho mais curto para cada robot que exista
+	for(int i = 0; i < numRobots; i++){
+		cout << "\nCaminho mais rapido a partir do robot estacionado no posto " << vecRobot[i] << endl;
+		// o posto final é o posto onde se encontra o i-ésimo robot
+		Vertice<Posto*,DstTime> *final = grafo.encvert_keyPosto(vecRobot[i]);
+		grafo.caminhoMinimoPesadoAut(final->GetConteudo(),inicial->GetConteudo());
+	}
+	// pedir ao utilizador que escolha o robot
+	cout << "\nIndique o robot que vai realizar o abastecimento do posto " << x << endl;
+	int robot;
+	bool control = false;
+	cin >> robot;
+	// validar num introduzido pelo utilizador
+	for(int i = 0; i < numRobots; i++)
+		if(robot == vecRobot[i])
+			control = true;
+	if(control == false)
+		cout << "\nTem que introduzir um robot valido! Abastecimento nao realizado!" << endl;
+	else{
+		Posto *p;
+		Automatico *a;
+		int contP = 0;
+		Robot *r;
+		Robot *r2;
+		int contR = 0;
+		// procurar o armazem na queue, sem a modificar
+		while(contP < postos.comprimento()){
+			postos.retira(p);
+			// guardar o armazem com chave procurada em *a
+			if(p->getKey() == x){
+				a = dynamic_cast<Automatico*>(p);
+			}
+			contP++;
+			postos.insere(p);
+		}
+		// procurar robot na fila
+		int cont1 = 1;
+		while(cont1 <= robots.comprimento()){
+			robots.encontra(cont1,r);
+			if(r->getPosition() == robot)
+				r2 = r; 
+			cont1++;
+		}
+		// chamar método para abastecer
+		abastecerAutomatico(*a,*r2);
+		cout << "\nO posto " << x << " foi abastecido pelo robot que estava estacionado no posto " << robot << endl;
+	} // end else
+	
+}
+
+void abastecerArm(int x){
+	// vai à lista de robots ver quantos robots existem na presente configuracao da fabrica
+	int numRobots = robots.comprimento();
+	// vector de inteiros para guardar as posiçoes dos robots
+	int vecRobot[100];
+	// procura onde estao os robots e guarda as suas posicoes no vector
+	procuraRobots(vecRobot, numRobots);
+	/* código que se segue permite encontrar um caminho entre o posto introduzido
+	pelo utilizador e cada um dos postos onde se encontre o robot */
+	// posto inicial (posto introduzido pelo utilizador
+	Vertice<Posto*,DstTime> *inicial = grafo.encvert_keyPosto(x);
+	// executa o algoritmo de procura caminho mais curto para cada robot que exista
+	for(int i = 0; i < numRobots; i++){
+		cout << "\nCaminho mais curto a partir do robot estacionado no posto " << vecRobot[i] << endl;
+		// o posto final é o posto onde se encontra o i-ésimo robot
+		Vertice<Posto*,DstTime> *final = grafo.encvert_keyPosto(vecRobot[i]);
+		grafo.caminhoMinimoPesadoArm(final->GetConteudo(),inicial->GetConteudo());
+	}
+	// pedir ao utilizador que escolha o robot
+	cout << "\nIndique o robot que vai realizar o abastecimento do posto " << x << endl;
+	int robot;
+	bool control = false;
+	cin >> robot;
+	// validar num introduzido pelo utilizador
+	for(int i = 0; i < numRobots; i++)
+		if(robot == vecRobot[i])
+			control = true;
+	if(control == false)
+		cout << "\nTem que introduzir um robot valido! Abastecimento nao realizado!" << endl;
+	else{
+		Posto *p;
+		Armazem *a;
+		int contP = 0;
+		Robot *r;
+		Robot *r2;
+		int contR = 0;
+		// procurar o armazem na queue, sem a modificar
+		while(contP < postos.comprimento()){
+			postos.retira(p);
+			// guardar o armazem com chave procurada em *a
+			if(p->getKey() == x){
+				a = dynamic_cast<Armazem*>(p);
+			}
+			contP++;
+			postos.insere(p);
+		}
+		// procurar robot na fila
+		int cont1 = 1;
+		while(cont1 <= robots.comprimento()){
+			robots.encontra(cont1,r);
+			if(r->getPosition() == robot)
+				r2 = r; 
+			cont1++;
+		}
+		// chamar método para abastecer
+		abastecerArmazem(*a,*r2);
+		cout << "\nO posto " << x << " foi abastecido pelo robot que estava estacionado no posto " << robot << endl;
+	} // end else
+}
+
+
+
+void procuraRobots(int v[], int n){
+	// apontador do tipo robot para ir a fila de robots buscar a sua posicao
+	Robot *tempRobot;
+	// variavel contadora para controlar posicoes percorridas na lista de robots
+	int cont = 0;
+	// o numero de vezes que se acede a lista e igual ao núm de robots lá presentes
+	while(cont < n){
+		// remove-se o robot, ficando este no apontador tempRobot
+		robots.remove(cont+1, tempRobot);
+		// no vector de posicoes é guardada a respectiva posicao do robot
+		v[cont] = tempRobot->getPosition();
+		// o robot retirado anteriormente e colocado novamente na lisa, no mesmo local
+		robots.insere(cont+1, tempRobot);
+		// incrementa-se contador para passar ao robot seguinte (ou sair do ciclo)
+		cont++;
+	}
+}
+
+bool abastecerRobot(Armazem &a, Robot &r){
+  Robot* pRobot = &r;
+  Armazem* pArmazem = &a;
+  pRobot->setPosition(pArmazem->getKey());
+  if(pArmazem->getStock()-pArmazem->getSafety() >= pRobot->getCargoCap()){
+    pRobot->setCargoAvail(pRobot->getCargoCap());
+    pArmazem->setStock(pArmazem->getStock()-pRobot->getCargoCap());
+    return true;
+  }else{
+    cout << "O armazem " << pArmazem->getKey() <<" nao tem stock suficiente para abastecer o robot " << pRobot->getRobotKey() << "." << endl;
+    return false;
+  }
+}
+
+void abastecerArmazem(Armazem &a, Robot &r){
+   // isto aqui foi so para ter um armazem para poder testar
+    Posto* tPosto;
+    Armazem* tArmazem;
+    Armazem* tArmazem2;
+    int cont = 0;
+
+    while(cont < postos.comprimento()){
+
+    postos.retira(tPosto);
+      if(strcmp(typeid(*tPosto).name(), typeid(Armazem).name()) == 0 ){
+          tArmazem = dynamic_cast<Armazem*>(tPosto);
+              if(tArmazem->getKey() == 0)
+                tArmazem2=tArmazem;
+          }
+          postos.insere(tPosto);  
+          cont++;
+      }
+    // acaba aqui 
+    
+  Robot * pRobot = &r;
+  Armazem * pArmazem = &a;
+  double resto;
+
+  pRobot->setPosition(pArmazem->getKey());// robot viaja para este posto
+
+  if(pRobot->getCargoAvail() >= pArmazem->getSafety()*3){ // se stock_robot >= stock_segurança * 3
+    pRobot->setCargoAvail(pRobot->getCargoAvail()-pArmazem->getSafety()*3); // stock_robot -= stock_segurança * 3
+    pArmazem->setStock(pArmazem->getStock()+pArmazem->getSafety()*3); // stock_armazem += stock_segurança * 3
+
+    if(pRobot->getCargoAvail() == 0) // abastecer robot se tiver 0 de stock
+      abastecerRobot(*tArmazem2,*pRobot);
+  }else{
+
+    resto = pArmazem->getSafety()*3;
+    
+    while(resto != 0){
+      pArmazem->setStock(pArmazem->getStock()+pRobot->getCargoAvail()); // stock_armazem += stock_robot
+      pRobot->setCargoAvail(0); // stock_robot = 0
+
+      if(abastecerRobot(*tArmazem2,*pRobot)){ // stock_robot = full
+
+        pRobot->setPosition(pArmazem->getKey()); // robot volta ao posto
+        if((resto - pRobot->getCargoAvail()) < pRobot->getCargoAvail()){
+          pArmazem->setStock(pArmazem->getStock()+(resto - pRobot->getCargoAvail())); // stock_armazem += (resto-stock_robot)
+          resto = 0;
+        }else{
+          resto -= pRobot->getCargoAvail(); // resto -= stock_robot
+        }
+      }else{
+        resto = 0;
+        cout << "Nao ha materia-prima suficiente no armazem para abastecer este posto." << endl;
+      }
+    }
+    estadoFabrica();
+      }
+    }
+
+void abastecerAutomatico(Automatico &a , Robot &r){
+    // isto aqui foi so para ter um armazem para poder testar
+    Posto* tPosto;
+    Armazem* tArmazem;
+    Armazem* tArmazem2;
+    int cont = 0;
+
+    while(cont < postos.comprimento()){
+
+    postos.retira(tPosto);
+      if(strcmp(typeid(*tPosto).name(), typeid(Armazem).name()) == 0 ){
+          tArmazem = dynamic_cast<Armazem*>(tPosto);
+              if(tArmazem->getKey() == 0)
+                tArmazem2=tArmazem;
+          }
+          postos.insere(tPosto);  
+          cont++;
+      }
+    // acaba aqui 
+
+  Robot * pRobot = &r;
+  Automatico * pAutomatico = &a;
+  double resto;
+
+  pRobot->setPosition(pAutomatico->getKey()); // robot viaja para este posto
+
+  if(pRobot->getCargoAvail() >= pAutomatico->getRequest()){ // se stock_robot >= stock_requesitado
+    pRobot->setCargoAvail(pRobot->getCargoAvail()-pAutomatico->getRequest()); // stock_robot -= stock_requesitado
+    pAutomatico->setStock(pAutomatico->getStock()+pAutomatico->getRequest()); // stock_automatico += stock_requesitado
+
+    if(pRobot->getCargoAvail() == 0) // abastecer robot se tiver 0 de stock
+      abastecerRobot(*tArmazem2, *pRobot);
+
+  }else{
+    resto = pAutomatico->getRequest();
+
+    while(resto != 0){
+      pAutomatico->setStock(pAutomatico->getStock()+pRobot->getCargoAvail()); // stock_automatico += stock_robot
+      pRobot->setCargoAvail(0); // stock_robot = 0
+
+      if(abastecerRobot(*tArmazem2, *pRobot)){ // stock_robot  = full
+
+        pRobot->setPosition(pAutomatico->getKey()); // robot volta ao posto
+
+        if((resto - pRobot->getCargoAvail()) < pRobot->getCargoAvail()){
+          pAutomatico->setStock(pAutomatico->getStock()+(resto - pRobot->getCargoAvail())); // stock_automatico += (resto-stock_robot)
+          resto = 0;
+        }else{
+          resto -= pRobot->getCargoAvail(); // resto -= stock_robot
+        }
+      }else{
+        resto = 0;
+        cout << "Nao ha materia-prima suficiente no armazem para abastecer este posto." << endl;
+      }
+    }
+
+    estadoFabrica();
+  }
+
+}
+
+
 void estadoFabrica(){
 
   Posto *tPosto;
   Armazem *tArmazem;
   Automatico *tAutomatico;
   Robot *tRobot;
+  Robot *tRobot2;
   int cont = 0;
+  bool temRobot = false;
 
   cout << "Estado da fabrica apos abastecimento:" << endl;
   cout << "\t Armazens: "<< endl;
@@ -542,9 +655,18 @@ void estadoFabrica(){
         cout << "\t\tStock: " << tArmazem->getStock()  << "kg." << endl ;
         cout << "\t\tLimite de seguranca: " << tArmazem->getSafety() << "kg."  << endl ;
         cout << "\t\tRobot: ";
-        if(tArmazem->getKey() == tArmazem->getRobot().getPosition())
+
+        int cont1 = 1;
+        while(cont1 <= robots.comprimento()){
+          robots.encontra(cont1,tRobot2);
+          if(tRobot2->getPosition() == tArmazem->getKey())
+            temRobot = true;
+          cont1++;
+        }
+        if(temRobot){
           cout << "Tem robot estacionado neste posto."<< endl;
-        else
+          temRobot = false;
+        }else
           cout << "Nao tem robot estacionado neste posto."<< endl;
         cout << "\t\t-------------------------------------------" << endl;
     }
@@ -594,9 +716,6 @@ void estadoFabrica(){
     cont++;
   }
 }
-
-
-
 
 /**
 * verifica se todos os postos automáticos sao
@@ -952,6 +1071,7 @@ int loadTimeDists(){
 
       }
  }
+
 
     fx4.close();
     return 0;

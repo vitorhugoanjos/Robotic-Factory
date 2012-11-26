@@ -3,6 +3,7 @@
 
 #include "Vertice.h"
 #include "Ramo.h"
+#include "Stack.h"
 
 #include <queue>
 #include <stack>
@@ -59,6 +60,17 @@ public:
 	void Escreve_Caminho(vector<TV> path, const TV &vinicio, const TV &vfim) const;
 	void Dijkstra(Vertice<TV,TR>* apvinic, Vertice<TV,TR>* apvfim, vector<TV> &antecessor, vector<TR> &distancia) const;
 	void Dijkstra(const TV &vinicio, const TV &vfim) const;
+
+	void caminhoSimples(const TV &inicio,const TV &fim);
+	void caminhoSimples2(Vertice<TV,TR> *vinicio,Vertice<TV,TR> *vfim, int * vector,Stack<TV> caminho);
+
+	bool caminhoMinimoPesado(const TV &inicio,const TV &fim);
+	void mostrarCaminho(int origem,int destino, const int * caminho);
+	float distanciaMinimoVertice(float * distancia, bool * processados); 
+	bool caminhoMinimoPesadoAut(const TV &inicio,const TV &fim);
+	bool caminhoMinimoPesadoArm(const TV &inicio,const TV &fim);
+	float tempoMinimoVertice(float * tempo, bool * processados); 
+
 	
 };
 
@@ -176,7 +188,7 @@ TR ListAdjGrafo<TV,TR>::MaxConteudoRamo() const
 	Vertice<TV,TR>* ap = graf;
 	Ramo<TV,TR>* aprmax;
 	
-	if (ap->apramo) //inicializa com o conteudo do 1Âº ramo 
+	if (ap->apramo) //inicializa com o conteudo do 1º ramo 
 	  aprmax = ap->apramo;
 	
 	while (ap != NULL)
@@ -221,7 +233,7 @@ bool ListAdjGrafo<TV,TR>::Conexo() const
 	return true;
 }
 
-// MÃ©todo Caminho privado de pesquisa em profundidade recursivo
+// Método Caminho privado de pesquisa em profundidade recursivo
 template<class TV,class TR>
 bool ListAdjGrafo<TV,TR>::Caminho(Vertice <TV,TR>*v1,	Vertice <TV,TR>*v2, int *vec) const
 {
@@ -237,7 +249,7 @@ bool ListAdjGrafo<TV,TR>::Caminho(Vertice <TV,TR>*v1,	Vertice <TV,TR>*v2, int *v
 	return false;
 }
 
-// MÃ©todo Caminho privado para inicializar o vector (que evita ciclos) em cada chamada ao mÃ©todo de pesquisa em profundidade recursivo
+// Método Caminho privado para inicializar o vector (que evita ciclos) em cada chamada ao método de pesquisa em profundidade recursivo
 template<class TV,class TR>
 bool ListAdjGrafo<TV,TR>::Caminho(Vertice <TV,TR>*v1, Vertice <TV,TR>*v2) const
 {
@@ -572,7 +584,7 @@ void ListAdjGrafo<TV,TR>::Caminho(Vertice<TV,TR> *pInicio,
 			if (vVisitados[pRamo->apv->key] == false)
 				Caminho(pRamo->apv, pFim, vVisitados, sCaminho);
 		
-		// Seguir para o prÃ³ximo vÃ©rtice adjacente
+		// Seguir para o próximo vértice adjacente
 		pRamo = pRamo->apr;
 	}
 	
@@ -592,7 +604,7 @@ void ListAdjGrafo<TV,TR>::Caminho(const TV& vinicio, const TV& vfim) const
 	
 	if (pInicio == NULL || pFim == NULL)
 	{
-		cout << "[ERRO] TODOS OS CAMINHOS: pelo menos um dos vÃ©rtices nÃ£o existe!\n\n";
+		cout << "[ERRO] TODOS OS CAMINHOS: pelo menos um dos vértices não existe!\n\n";
 		return;
 	}
 	
@@ -612,8 +624,8 @@ void ListAdjGrafo<TV,TR>::Escreve_Caminho(vector<TV> path,
 																					const TV &vinicio,
 																					const TV &vfim) const
 {
-	// Estabelecer o caminho mÃ­nimo entre os dois vÃ©rtices, a partir do destino.
-	// Verifica-se primeiro se o vÃ©rtice final Ã© alcanÃ§avel a partir do vertice
+	// Estabelecer o caminho mínimo entre os dois vértices, a partir do destino.
+	// Verifica-se primeiro se o vértice final é alcançavel a partir do vertice
 	// inicial.
 	
 	Vertice<TV,TR> *pInicio, *pFim;
@@ -623,7 +635,7 @@ void ListAdjGrafo<TV,TR>::Escreve_Caminho(vector<TV> path,
 	
 	if (pInicio == NULL || pFim == NULL)
 	{
-		cout << "[ERRO] ESCREVE CAMINHO: Pelo menos um dos vÃ©rtices nÃ£o existe!!\n\n";
+		cout << "[ERRO] ESCREVE CAMINHO: Pelo menos um dos vértices não existe!!\n\n";
 		return;
 	}
 	
@@ -643,8 +655,8 @@ void ListAdjGrafo<TV,TR>::Escreve_Caminho(vector<TV> path,
 			pAnterior = encvert_conteudo(path[keyActual]);
 		}
 		
-		cout << "Caminho mÃ­nimo pesado (Dijkstra):\n";		
-		// Escreve o caminho mÃ­nimo (primeiro->Ãºltimo).
+		cout << "Caminho mínimo pesado (Dijkstra):\n";		
+		// Escreve o caminho mínimo (primeiro->último).
 		while (!sCaminho.empty())
 		{
 			cout << sCaminho.top() << endl;
@@ -652,7 +664,7 @@ void ListAdjGrafo<TV,TR>::Escreve_Caminho(vector<TV> path,
 		}
 	}
 	else {
-		cout << "NÃ£o existe um caminho possÃ­vel entre os dois vÃ©rtices!\n";
+		cout << "Não existe um caminho possível entre os dois vértices!\n";
 	}
 }
 
@@ -665,15 +677,15 @@ void ListAdjGrafo<TV,TR>::Dijkstra(Vertice<TV,TR>* pInicio,
 {
 	if (pInicio == NULL || pFim == NULL)
 	{
-		cout << "[ERRO] DIJKSTRA: Pelo menos um dos vÃ©rtices nÃ£o existe!!\n\n";
+		cout << "[ERRO] DIJKSTRA: Pelo menos um dos vértices não existe!!\n\n";
 		return;
 	}
 	
 	vector<bool> distanciaValida(nvertices+1, false);
 	vector<bool> processado(nvertices+1, false);
 	
-	// Garantir que os vectores recebidos tÃªm as caracterÃ­sticas necessÃ¡rias para
-	// a execuÃ§Ã£o do algoritmo do Dijkstra!
+	// Garantir que os vectores recebidos têm as características necessárias para
+	// a execução do algoritmo do Dijkstra!
 	distancia = vector<TR>(nvertices+1);
 	antecessor = vector<TV>(nvertices+1);
 	
@@ -683,17 +695,17 @@ void ListAdjGrafo<TV,TR>::Dijkstra(Vertice<TV,TR>* pInicio,
 	
 	Vertice<TV,TR> * pActual = pInicio;
 	
-	// Enquanto houver vÃ©rtices alcanÃ§Ã¡veis...
+	// Enquanto houver vértices alcançáveis...
 	while(pActual != NULL)
 	{
-		processado[pActual->key] = true;  // VÃ©rtice processado.
+		processado[pActual->key] = true;  // Vértice processado.
 		
 		Ramo<TV,TR> * pRamo = pActual->apramo;
 		
-		// Enquanto houver vÃ©rtices adjacentes...
+		// Enquanto houver vértices adjacentes...
 		while(pRamo != NULL)
 		{
-			// Se o vÃ©rtice ainda nÃ£o tiver sido considerado processado...
+			// Se o vértice ainda não tiver sido considerado processado...
 			if (processado[pRamo->apv->key] == false)
 			{
 				if (distanciaValida[pRamo->apv->key] == false ||
@@ -704,11 +716,11 @@ void ListAdjGrafo<TV,TR>::Dijkstra(Vertice<TV,TR>* pInicio,
 					antecessor[pRamo->apv->key] = pActual->vconteudo;
 				}
 			}
-			// Para o prÃ³ximo ramo adjacente.
+			// Para o próximo ramo adjacente.
 			pRamo = pRamo->apr;
 		}
 		
-		// Qual o nÃ³ por processar com menor distÃ¢ncia Ã  origem?
+		// Qual o nó por processar com menor distância à origem?
 		int imin = 0;
 		for(int i = 1; i <= nvertices; i++)
 		{
@@ -719,16 +731,16 @@ void ListAdjGrafo<TV,TR>::Dijkstra(Vertice<TV,TR>* pInicio,
 				}
 		}
 		
-		// Segue a partir do vÃ©rtice mais prÃ³ximo da origem, por processar.
+		// Segue a partir do vértice mais próximo da origem, por processar.
 		pActual = encvert_key(imin);
 		
 	}
 	
-	// JÃ¡ se visitaram todos os vÃ©rtices alcanÃ§Ã¡veis...
+	// Já se visitaram todos os vértices alcançáveis...
 	
-	// NOTA: NESTE MOMENTO OS VECTORES antecessor[] E distancia[] JÃ CONTÃŠM AS
-	//       DISTÃ‚NCIAS MÃNIMAS DA ORIGEM A QUALQUER VÃ‰RTICE ALCANÃ‡ÃVEL E OS
-	//       CAMINHOS RELATIVOS A ESSAS DISTÃƒNCIAS MÃNIMAS!
+	// NOTA: NESTE MOMENTO OS VECTORES antecessor[] E distancia[] JÁ CONTÊM AS
+	//       DISTÂNCIAS MÍNIMAS DA ORIGEM A QUALQUER VÉRTICE ALCANÇÁVEL E OS
+	//       CAMINHOS RELATIVOS A ESSAS DISTÃNCIAS MÍNIMAS!
 	
 	Escreve_Caminho(antecessor, pInicio->vconteudo, pFim->vconteudo);
 	
@@ -736,7 +748,7 @@ void ListAdjGrafo<TV,TR>::Dijkstra(Vertice<TV,TR>* pInicio,
 	
 }
 
-// MÃ©todo de pesquisa do caminho mÃ­nimo pesado (Dijkstra).
+// Método de pesquisa do caminho mínimo pesado (Dijkstra).
 template<class TV,class TR>
 void ListAdjGrafo<TV,TR>::Dijkstra(const TV &vinicio, const TV &vfim) const
 {
@@ -747,7 +759,7 @@ void ListAdjGrafo<TV,TR>::Dijkstra(const TV &vinicio, const TV &vfim) const
 	
 	if (pInicio == NULL || pFim == NULL)
 	{
-		cout << "[ERRO] DIJKSTRA: Pelo menos um dos vÃ©rtices nÃ£o existe!!\n\n";
+		cout << "[ERRO] DIJKSTRA: Pelo menos um dos vértices não existe!!\n\n";
 		return;
 	}
 	
@@ -756,6 +768,220 @@ void ListAdjGrafo<TV,TR>::Dijkstra(const TV &vinicio, const TV &vfim) const
 	vector<TV> antecessor(nvertices+1, pInicio->vconteudo);
 	
 	Dijkstra(pInicio, pFim, antecessor, distancia);
+}
+
+
+/* Caminhos simples entre 2 vértices (AMD) */
+template<class TV,class TR>
+void ListAdjGrafo<TV,TR>::caminhoSimples(const TV &inicio,const TV &fim)
+{
+       Vertice<TV,TR> *vinicio=encvert_conteudo(inicio);
+       Vertice<TV,TR> *vfim=encvert_conteudo(fim);
+       int *vector=new int[nvertices+1];
+       for (int i=1; i<=nvertices; i++)        vector[i]=0;
+       Stack<TV> caminho;
+       if(vinicio!=NULL && vfim!=NULL){
+             caminhoSimples(vinicio,vfim,vector,caminho);
+	   }
+}
+
+
+template<class TV,class TR>
+void ListAdjGrafo<TV,TR>::caminhoSimples2(Vertice<TV,TR> *vinicio, Vertice<TV,TR> *vfim, int *vector, Stack<TV> caminho)
+{      TV vert;
+		vector[vinicio->GetKey()]=1;
+       caminho.push(vinicio->vconteudo);
+       Ramo<TV,TR> *apramo=vinicio->apramo;
+             while(apramo!=NULL)
+             {
+                    if(apramo->apv->vconteudo==vfim->vconteudo)
+                    {
+                           caminho.push(apramo->apv->vconteudo);
+                           cout<<endl<<"Percurso tomado pelo robot:"<<endl;
+                           caminho.inverte();
+                           //cout << caminho<<endl;    
+                           caminho.pop(vert);
+                    }else
+                    {
+                           if(vector[apramo->apv->key==0])
+                           caminhoSimples2(apramo->apv,vfim,vector,caminho);
+                    }
+                           apramo=apramo->apr;
+             }
+			 vector[vinicio->GetKey()]=0;
+       caminho.pop(vert);
+}
+
+
+//- Caminho minimo Pesado - Algoritmo Pesado Dijkstra --- para as distancias
+
+template<class TV,class TR>
+bool ListAdjGrafo<TV,TR>::caminhoMinimoPesado(const TV &inicio,const TV &fim)
+{   float somadist=0;
+bool *processados=new bool[nvertices+1];
+int *caminho=new int[nvertices+1];
+float *distancia=new float[nvertices+1];
+for (int i=1; i<=nvertices; i++)
+{      processados[i]=false;
+caminho[i]=0;
+distancia[i]=9999;
+}
+Vertice<TV,TR> *apvert=encvert_conteudo(inicio);
+Vertice<TV,TR> *apvertfim=encvert_conteudo(fim);
+if(apvert==NULL || apvertfim==NULL)
+	return false;
+int indOrigem=apvert->key;
+distancia[apvert->key]=0;
+//Este algoritmo calcula o caminho mínimo entre o vertice inicio e todos os outros
+while(indOrigem!=-1)
+{     
+	processados[indOrigem]=true;
+	apvert=encvert_key(indOrigem);
+	Ramo<TV,TR> *apramo=apvert->apramo;           
+	while(apramo!=NULL)
+	{
+		int indDestino=apramo->apv->key;
+		if(!processados[indDestino] && distancia[indDestino] > distancia[indOrigem] + apramo->rconteudo->getDist())
+		{
+			distancia[indDestino]=distancia[indOrigem]+apramo->rconteudo->getDist();
+			caminho[indDestino]=indOrigem;
+		}
+		apramo=apramo->apr;
+	}
+	indOrigem=distanciaMinimoVertice(distancia,processados);
+}
+apvert=encvert_conteudo(inicio);
+apvertfim=encvert_conteudo(fim);
+mostrarCaminho(apvert->key,apvertfim->key,caminho);
+return true;
+}
+
+
+template<class TV,class TR>
+void ListAdjGrafo<TV,TR>::mostrarCaminho(int origem,int destino, const int * caminho)
+{
+	if(origem!=destino)
+	{     
+		mostrarCaminho(origem,caminho[destino],caminho);
+	
+	}
+	Vertice<TV,TR> *apvert=encvert_key(destino);
+	cout << apvert-> vconteudo -> getKey() << "  ";
+
+}
+
+template<class TV,class TR>
+float ListAdjGrafo<TV,TR>::distanciaMinimoVertice(float * distancia, bool * processados) 
+{
+	int minimo=INT_MAX, indVertice=-1;
+	for(int i=1; i<=nvertices; i++)
+		if(!processados[i] && distancia[i]<minimo)
+		{
+			minimo=distancia[i];
+			indVertice=i;
+		}
+		return indVertice;
+}
+
+//- Caminho minimo Pesado - Algoritmo Pesado Dijkstra --- para as distancias
+template<class TV,class TR>
+bool ListAdjGrafo<TV,TR>::caminhoMinimoPesadoAut(const TV &inicio,const TV &fim)
+{   float somadist=0;
+bool *processados=new bool[nvertices+1];
+int *caminho=new int[nvertices+1];
+float *tempo=new float[nvertices+1];
+for (int i=1; i<=nvertices; i++)
+{      processados[i]=false;
+caminho[i]=0;
+tempo[i]=9999;
+}
+Vertice<TV,TR> *apvert=encvert_conteudo(inicio);
+Vertice<TV,TR> *apvertfim=encvert_conteudo(fim);
+if(apvert==NULL || apvertfim==NULL)
+	return false;
+int indOrigem=apvert->key;
+tempo[apvert->key]=0;
+
+//Este algoritmo calcula o caminho mínimo entre o vertice inicio e todos os outros
+while(indOrigem!=-1)
+{     
+	processados[indOrigem]=true;
+	apvert=encvert_key(indOrigem);
+	Ramo<TV,TR> *apramo=apvert->apramo;           
+	while(apramo!=NULL)
+	{
+		int indDestino=apramo->apv->key;
+		if(!processados[indDestino] && tempo[indDestino] > tempo[indOrigem] + apramo->rconteudo.getTime())
+		{
+			tempo[indDestino]=tempo[indOrigem]+apramo->rconteudo.getTime();
+			caminho[indDestino]=indOrigem;
+		}
+		apramo=apramo->apr;
+	}
+	indOrigem=tempoMinimoVertice(tempo,processados);
+}
+apvert=encvert_conteudo(inicio);
+apvertfim=encvert_conteudo(fim);
+mostrarCaminho(apvert->key,apvertfim->key,caminho);
+return true;
+}
+
+//- Caminho minimo Pesado - Algoritmo Pesado Dijkstra --- para as distancias
+template<class TV,class TR>
+bool ListAdjGrafo<TV,TR>::caminhoMinimoPesadoArm(const TV &inicio,const TV &fim)
+{   float somadist=0;
+bool *processados=new bool[nvertices+1];
+int *caminho=new int[nvertices+1];
+float *tempo=new float[nvertices+1];
+for (int i=1; i<=nvertices; i++)
+{      processados[i]=false;
+caminho[i]=0;
+tempo[i]=9999;
+}
+Vertice<TV,TR> *apvert=encvert_conteudo(inicio);
+Vertice<TV,TR> *apvertfim=encvert_conteudo(fim);
+if(apvert==NULL || apvertfim==NULL)
+	return false;
+int indOrigem=apvert->key;
+tempo[apvert->key]=0;
+
+//Este algoritmo calcula o caminho mínimo entre o vertice inicio e todos os outros
+while(indOrigem!=-1)
+{     
+	processados[indOrigem]=true;
+	apvert=encvert_key(indOrigem);
+	Ramo<TV,TR> *apramo=apvert->apramo;           
+	while(apramo!=NULL)
+	{
+		int indDestino=apramo->apv->key;
+		if(!processados[indDestino] && tempo[indDestino] > tempo[indOrigem] + apramo->rconteudo.getDst())
+		{
+			tempo[indDestino]=tempo[indOrigem]+apramo->rconteudo.getDst();
+			caminho[indDestino]=indOrigem;
+		}
+		apramo=apramo->apr;
+	}
+	indOrigem=tempoMinimoVertice(tempo,processados);
+}
+apvert=encvert_conteudo(inicio);
+apvertfim=encvert_conteudo(fim);
+mostrarCaminho(apvert->key,apvertfim->key,caminho);
+return true;
+}
+
+
+
+template<class TV,class TR>
+float ListAdjGrafo<TV,TR>::tempoMinimoVertice(float * tempo, bool * processados) 
+{
+	int minimo=INT_MAX, indVertice=-1;
+	for(int i=1; i<=nvertices; i++)
+		if(!processados[i] && tempo[i]<minimo)
+		{
+			minimo=tempo[i];
+			indVertice=i;
+		}
+		return indVertice;
 }
 
 

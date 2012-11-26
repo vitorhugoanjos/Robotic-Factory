@@ -1,4 +1,4 @@
-/* Projecto ESINF - 2Âº ano LEI -ISEP
+/* Projecto ESINF - 2º ano LEI -ISEP
  * Outubro 2012
  *
  * File:   Posto.h
@@ -16,29 +16,29 @@ using namespace std;
 
 /*
  * Subclasse ROBOT permite instanciar objectos do tipo ROBOT
- * @author JoÃ£o Carreira, Vitor Hugo Santos
+ * @author João Carreira, Vitor Hugo Santos
  * @version: 1.0 (Oct 2012)
  */
 class Robot{
 private:
-    /* chave de identificaÃ§Ã£o do robot (inteiro > 0, Ãºnica entre robots
+    /* chave de identificação do robot (inteiro > 0, única entre robots
     mas distinta dos postos) */
     int robotKey;
     /* capacidade de carga do robot (kg) */
     double cargoCap;
-    /* matÃ©ria-prima disponÃ­vel no robot (kg) */
+    /* matéria-prima disponível no robot (kg) */
     double cargoAvail;
-    /* posiÃ§Ã£o em que o robot se econtra (corresponde Ã  key do posto) */
+    /* posição em que o robot se econtra (corresponde à key do posto) */
     int position;
 
 public:
-    /* protÃ³tipos de construtores e destrutor */
+    /* protótipos de construtores e destrutor */
     Robot();
     Robot(int rKp, double cCp, double cAp, int pp);
     Robot(const Robot &r);
     ~Robot();
 
-    /* protÃ³tipos de GETS e SETS */
+    /* protótipos de GETS e SETS */
     int getRobotKey();
     double getCargoCap();
     double getCargoAvail();
@@ -48,11 +48,11 @@ public:
     void setCargoAvail(double cAp);
     void setPosition(int pp);
 
-    /* sobrecarga de operadores de comparaÃ§Ã£o */
+    /* sobrecarga de operadores de comparação */
     bool operator == (const Robot &e) const;
     bool operator > (const Robot &r) const;
 
-    /* sobrecarga do operadtor de atribuiÃ§Ã£o */
+    /* sobrecarga do operadtor de atribuição */
     const Robot &operator = (const Robot &r);
 
     /* sobrecarga do operador de stream out */
@@ -61,9 +61,9 @@ public:
 
 
 /**
- * Construtor sem parÃ¢metros, cria um robot com todos os seus parÃ¢metros a zero,
- * nomeadamente a sua chave, capacidade de carga, matÃ©ria-prima disponÃ­vel e
- * posiÃ§Ã£o
+ * Construtor sem parâmetros, cria um robot com todos os seus parâmetros a zero,
+ * nomeadamente a sua chave, capacidade de carga, matéria-prima disponível e
+ * posição
  */
 Robot::Robot(){
     setRobotKey(0);
@@ -74,12 +74,12 @@ Robot::Robot(){
 
 
 /**
- * Construtor com parÃ¢metros: cria um objecto do tipo ROBOT, com os parÃ¢metros robotKey,
+ * Construtor com parâmetros: cria um objecto do tipo ROBOT, com os parâmetros robotKey,
  * cargoCap, cargoAvail e position
- * @param rkp   Ã© a chava a atribuir ao robot
- * @param cCp   Ã© quantidade de matÃ©ria-prima capaz de transportar
- * @param cAp   Ã© a quantidade de matÃ©ria-prima que tem disponÃ­vel
- * @param pp    Ã© a posiÃ§Ã£o em que o robot se encontra
+ * @param rkp   é a chava a atribuir ao robot
+ * @param cCp   é quantidade de matéria-prima capaz de transportar
+ * @param cAp   é a quantidade de matéria-prima que tem disponível
+ * @param pp    é a posição em que o robot se encontra
  */
 Robot::Robot(int rKp, double cCp, double cAp, int pp){
     setRobotKey(rKp);
@@ -90,10 +90,10 @@ Robot::Robot(int rKp, double cCp, double cAp, int pp){
 
 
 /**
- * Construtor cÃ³pia: cria uma cÃ³pia de um objecto do tipo ROBOT, passado por
- * referÃªncia
- * @param r     Ã© a referÃªncia do objecto do tipo ROBOT (declarada como const de
- *              forma a que o objecto copiado nÃ£o sofra alteraÃ§Ãµes)
+ * Construtor cópia: cria uma cópia de um objecto do tipo ROBOT, passado por
+ * referência
+ * @param r     é a referência do objecto do tipo ROBOT (declarada como const de
+ *              forma a que o objecto copiado não sofra alterações)
  */
 Robot::Robot(const Robot &r){
     robotKey = r.robotKey;
@@ -104,7 +104,7 @@ Robot::Robot(const Robot &r){
 
 
 /**
- * Destrutor para objectos do tipo POSTO (sem definiÃ§Ã£o)
+ * Destrutor para objectos do tipo POSTO (sem definição)
  */
 Robot::~Robot(){
 
@@ -112,15 +112,15 @@ Robot::~Robot(){
 
 
 /**
- * MÃ©todo de acesso pÃºblico Ã  chave de identificaÃ§Ã£o do robot
- * @return      chave de identificaÃ§Ã£o do robot
+ * Método de acesso público à chave de identificação do robot
+ * @return      chave de identificação do robot
  */
 int Robot::getRobotKey(){
     return robotKey;
 }
 
 /**
- * MÃ©todo de acesso pÃºblico Ã  capacidade de carga do robot
+ * Método de acesso público à capacidade de carga do robot
  * @return      capacidade de carga do robot
  */
 double Robot::getCargoCap(){
@@ -129,9 +129,9 @@ double Robot::getCargoCap(){
 
 
 /**
- * MÃ©todo de acesso pÃºblico Ã  quantidade de matÃ©ria-prima que o robot ainda
- * tem disponÃ­vel
- * @return      quantidade de matÃ©ria-prima disponÃ­vel
+ * Método de acesso público à quantidade de matéria-prima que o robot ainda
+ * tem disponível
+ * @return      quantidade de matéria-prima disponível
  */
 double Robot::getCargoAvail(){
     return cargoAvail;
@@ -139,8 +139,8 @@ double Robot::getCargoAvail(){
 
 
 /**
- * MÃ©todo de acesso pÃºblico Ã  localizaÃ§Ã£o actual do robot
- * @return      posiÃ§Ã£o do robot
+ * Método de acesso público à localização actual do robot
+ * @return      posição do robot
  */
 int Robot::getPosition(){
     return position;
@@ -148,17 +148,17 @@ int Robot::getPosition(){
 
 
 /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o da chave de identificaÃ§Ã£o do robot
- * @param rKp   chave de identificaÃ§Ã£o a atribuir ao robot
+ * Método público de modificação da chave de identificação do robot
+ * @param rKp   chave de identificação a atribuir ao robot
  */
 void Robot::setRobotKey(int rKp){
-    /* validar key, se menor <= zero entÃ£o atribui 0 */
+    /* validar key, se menor <= zero então atribui 0 */
     rKp > 0 ? robotKey = rKp : robotKey = 0;
 }
 
 
 /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o da capacidade de carga do robot
+ * Método público de modificação da capacidade de carga do robot
  * @param cCp   capacidade de carga do robot
  */
 void Robot::setCargoCap(double cCp){
@@ -168,12 +168,12 @@ void Robot::setCargoCap(double cCp){
 
 
 /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o da quantidade de matÃ©ria-prima que o robot
+ * Método público de modificação da quantidade de matéria-prima que o robot
  * transporta
- * @param cAp   quantidade de matÃ©ria-prima presente no robot
+ * @param cAp   quantidade de matéria-prima presente no robot
  */
 void Robot::setCargoAvail(double cAp){
-    /* validar matÃ©ria-prima disponÃ­vel, tem que ser > 0 e < que capacidade de
+    /* validar matéria-prima disponível, tem que ser > 0 e < que capacidade de
      carga (se exceder capacidade de carga fica igual a cargoCap) */
     if(cAp < 0)
         cargoAvail = 0;
@@ -185,8 +185,8 @@ void Robot::setCargoAvail(double cAp){
 
 
 /**
- * MÃ©todo pÃºblico de modificaÃ§Ã£o da posiÃ§Ã£o do robot
- * @param pp    posiÃ§Ã£o do robot
+ * Método público de modificação da posição do robot
+ * @param pp    posição do robot
  */
 void Robot::setPosition(int pp){
     pp > 0 ? position = pp : position = 0;
@@ -194,9 +194,9 @@ void Robot::setPosition(int pp){
 
 
 /**
- * MÃ©todo de escrita, imprime no ecrÃ£ toda a informaÃ§Ã£o sobre o robot,
- * nomeadamente a sua chave de identicaÃ§Ã£o, capacidade de carga de matÃ©ria-prima,
- * quantidade de matÃ©ria-prima que ainda tem disponÃ­vel e posiÃ§Ã£o actual
+ * Método de escrita, imprime no ecrã toda a informação sobre o robot,
+ * nomeadamente a sua chave de identicação, capacidade de carga de matéria-prima,
+ * quantidade de matéria-prima que ainda tem disponível e posição actual
  * @param out
  */
 void Robot::write(ostream &out) const{
@@ -209,11 +209,11 @@ void Robot::write(ostream &out) const{
 
 
 /**
- * sobrecarga de operador de comparaÃ§Ã£o, para verificar se dois robots
- * sÃ£o iguais em termos de quantidade de matÃ©ria-prima disponÃ­vel
- * @param r     Ã© a referÃªncia para um objecto do tipo ROBOT
- * @return      TRUE se tiverem a mesma quantidade de matÃ©ria-prima, caso
-                contrÃ¡rio devolve FALSE
+ * sobrecarga de operador de comparação, para verificar se dois robots
+ * são iguais em termos de quantidade de matéria-prima disponível
+ * @param r     é a referência para um objecto do tipo ROBOT
+ * @return      TRUE se tiverem a mesma quantidade de matéria-prima, caso
+                contrário devolve FALSE
  */
 bool Robot::operator == (const Robot &r) const{
     if(cargoAvail == r.cargoAvail)
@@ -224,11 +224,11 @@ bool Robot::operator == (const Robot &r) const{
 
 
 /**
- * sobrecarga do operador >, para verificar se a quantidade de matÃ©ria-prima presente
- * num robot Ã© maior do que a de outro
- * @param r     Ã© a referÃªncia para um objecto do tipo ROBOT
- * @return      TRUE se a quantidade de metÃ©ria-prima disponÃ­vel fÃ´r superior, caso
-                contrÃ¡rio devolve FALSE
+ * sobrecarga do operador >, para verificar se a quantidade de matéria-prima presente
+ * num robot é maior do que a de outro
+ * @param r     é a referência para um objecto do tipo ROBOT
+ * @return      TRUE se a quantidade de metéria-prima disponível fôr superior, caso
+                contrário devolve FALSE
  */
 bool Robot::operator > (const Robot &r) const{
     return (cargoAvail > r.cargoAvail);
@@ -236,9 +236,9 @@ bool Robot::operator > (const Robot &r) const{
 
 
 /**
- * sobrecarga do operador de atribuiÃ§Ã£o = para atribuir, directamente, um objecto
+ * sobrecarga do operador de atribuição = para atribuir, directamente, um objecto
  * do tipo ROBOT a outro
- * @param r     Ã© a referÃªncia para um objecto do tipo ROBOT
+ * @param r     é a referência para um objecto do tipo ROBOT
  * @return      apontador para o objecto corrente
  */
 const Robot & Robot::operator = (const Robot &r){
@@ -252,9 +252,9 @@ const Robot & Robot::operator = (const Robot &r){
 
 /**
  * Sobrecarga do operador de stream out
- * @param out   referÃªncia do standard output
- * @param r     referÃªncia de um objecto do tipo ROBOT
- * @return      referÃªncia do standard output
+ * @param out   referência do standard output
+ * @param r     referência de um objecto do tipo ROBOT
+ * @return      referência do standard output
  */
 ostream &operator << (ostream &out, const Robot &r){
     r.write(out);

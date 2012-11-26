@@ -17,7 +17,7 @@ class Ramo
 		TR rconteudo;
 		Vertice<TV,TR>* apv;
 		Ramo<TV,TR>* apr;
-	
+		
 	public:
 		Ramo();
 		Ramo(const TR& rcont, Vertice<TV,TR>* pv);
